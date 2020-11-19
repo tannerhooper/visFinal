@@ -5,34 +5,44 @@
   <meta charset="UTF-8">
   <title>CS 5820- HW7</title>
   <link rel="stylesheet" href="/public/css/style.css" />
-  <!--script src="https://d3js.org/d3.v4.js"></script-->
-  <script src="d3.js"></script>
+  <script src="https://d3js.org/d3.v4.js"></script>
+  <script src="https://d3js.org/topojson.v2.min.js"></script>
 </head>
 
 <body>
   <h1>US College Dropout rates from 1996 to 2018</h1>
   <p class="info">Name: Laryssa Revelli; E-Mail: laryssa@aggiemail.usu.edu; A#: A01979841</p>
   <p class="info">Name: Tanner Hooper; E-Mail: tannerhooper@yahoo.com; A#: A01818783</p>
-  <p class="info">Name: Conner Nance; E-Mail: conner.nance1@gmail.com; A#: A0#######</p>
-  
+  <p class="info">Name: Conner Nance; E-Mail: conner.nance1@gmail.com; A#: A01836222</p>
+
   <div id="year-chart" class="view">
   </div>
   <div id="spend-chart" class="view">
   </div>
-  <div id="us-line-chart" class="view">
-    <h3>US Average</h3>
-    <svg id="us-svg"></svg>
+  
+  <div>
+    <div class="leftColumn">
+      <svg width="960" height="600"></svg>
+
+
+    </div>
+    <div class="rightColumn" width="500">
+        <div id="us-line-chart" class="view">
+          <h3>US Average</h3>
+          <svg id="us-svg"></svg>
+        </div>
+        <div id="st-line-chart" class="view">
+          <h3>State Average</h3>
+          <svg id="st-svg"></svg>
+        </div>
+    </div>
   </div>
-  <div id="st-line-chart" class="view">
-    <h3>State Average</h3>
-    <svg id="st-svg"></svg>
-  </div>
-<!-- TODO: add chart divs -->
 
   <script type="application/javascript" src="public/js/yearChart.js"></script>
   <script type="application/javascript" src="public/js/spendChart.js"></script>
   <script type="application/javascript" src="public/js/lineChart.js"></script>
-<!-- TODO: add chart scripts -->
+  <script type="application/javascript" src="public/js/map.js"></script>
+  <!-- TODO: add chart scripts -->
   <script type="application/javascript" src="/public/js/main.js"></script>
 </body>
 

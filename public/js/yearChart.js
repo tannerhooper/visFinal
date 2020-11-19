@@ -115,6 +115,8 @@ class YearChart {
 
     d3.csv(`data/${d.YEAR}.csv`).then(year => {
       this.spendChart.update(year); //TODO send chart instances
+      this.usLineChart.update(year);
+      this.stLineChart.update(year);
     });
     
   }

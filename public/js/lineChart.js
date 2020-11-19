@@ -5,7 +5,7 @@ class LineChart {
     //US:
     //ST:
 
-    update(){
-
+    update(data){
+        console.log(data)
     }
 }
