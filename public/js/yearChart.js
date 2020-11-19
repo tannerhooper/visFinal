@@ -8,12 +8,16 @@ class YearChart {
    * @param electionInfo instance of ElectionInfo
    * @param yearlyDropouts over years
    */
-  constructor (spendChart, yearlyDropouts) {
+  constructor (spendChart, yearlyDropouts,usline,stline) {
 
     //Todo: Create YearChart instance
     this.spendChart = spendChart;
     // the data
     this.yearlyDropouts = yearlyDropouts;
+    // US line chart instance
+    this.usLineChart = usline;
+    // State line chart instance
+    this.stLineChart = stline;
     
     // Initializes the svg elements required for this chart
     this.margin = {top: 10, right: 20, bottom: 30, left: 50};

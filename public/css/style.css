@@ -17,6 +17,27 @@
     stroke-width:4;
     resize: 4
 }
+
+.sideBar {
+    /* display: inline-block; */
+    /* width: 30%;
+    float:right; */
+}
+
+#us-line-chart {
+  /* background-color:"black";
+  position:relative;
+  display:inline-block;
+  vertical-align: top; */
+}
+
+#st-line-chart {
+  /* background-color:"blue";
+  position:relative;
+  display:inline-block;
+  vertical-align: bottom; */
+}
+
 /* slider ------------------------------ */
 
 .slider-holder{
