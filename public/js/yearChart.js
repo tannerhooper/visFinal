@@ -29,7 +29,7 @@ class YearChart {
     //fetch the svg bounds
     this.svgBounds = divyearChart.node().getBoundingClientRect();
     this.svgWidth = this.svgBounds.width - this.margin.left - this.margin.right;
-    this.svgHeight = 100;
+    this.svgHeight = 40;
 
     //add the svg to the div
     this.svg = divyearChart.append("svg")
