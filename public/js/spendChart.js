@@ -2,7 +2,7 @@
 class SpendChart {
 
     /**
-     * Constructor for the Year Chart
+     * Constructor for the Spend Chart
      */
     constructor () {
   
@@ -112,9 +112,10 @@ class SpendChart {
                 .attr("x1", 10+x(v1))
                 .attr("x2", 10+x(v2))
         
-          selectSpending(v1, v2); 
+          selectSpending(x(v), v2); 
         }
         function selectSpending(lower, upper) {
+            console.log(lower)
             var data = dropouts.filter(function(k){return !isNaN(+k.INEXPFTE);})
                 .filter(function(k){return (+k.INEXPFTE > lower && +k.INEXPFTE < upper);});
                 // .then(data => {
