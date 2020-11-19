@@ -11,7 +11,6 @@ d3.csv("data/yearwiseDropouts.csv").then(yearlyDropouts => {
   yearChart.selectYear(s, s.data()[0]);
 
   d3.csv(`data/${s.data()[0].YEAR}.csv`).then(data => {
-    let map = new Map(data)
-    map.update();
+    map.update(data);
   })
 });
