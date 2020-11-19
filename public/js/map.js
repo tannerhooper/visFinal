@@ -66,31 +66,65 @@ class Map {
 
         var path = d3.geoPath();
 
-        //Domain definition for global color scale
-        let domain = [0, .05, .1, .15, .2, .25, .3, .35, .4, .45, .5, .55, .6, .65, .7, .75, .8, .85, .9, .95, .1]
-        //Color range for global color scale
-        let range = ["#FF0000", "#FE1616", "#FD2D2D", "#FC4343", "#FB5A5A", "#FB7070", "#FA8787",
-            "#F99D9D", "#F8B4B4", "#F7CACA", "#F7E1E1",
-            "#E6FFEA", "#CEEFD2", "#B6E0BA", "#9ED1A2", "#86C18A", "#6EB271", "#56A359",
-            "#3E9342", "#268429", "#0E7512"]
+        d3.json("https://d3js.org/us-10m.v1.json").then(us => {
+            console.log(topojson.feature(us, us.objects.states).features)
 
-        //ColorScale be used consistently by all the charts
-        this.colorScale = d3.scaleQuantile()
-            .domain(domain)
-            .range(range);
 
+            let range = d3.interpolateBlues
+
+            // let range = ['white', 'blue']
+            let stateList = this.createStateList(data);
+
+
+            //ColorScale be used consistently by all the charts
+            let colorScale = d3.scaleSequential()
+                .domain([0, 0.7])
+                .interpolator(range);
+
+            this.createMap(svg, us, States, path, colorScale, stateList);
+
+
+            svg.append("path")
+                .attr("class", "state-borders")
+                .attr("d", path(topojson.mesh(us, us.objects.states, function (a, b) { return a !== b; })));
+        });
+    }
+
+    createMap(svg, us, States, path, colorScale, stateList) {
+        svg.append("g")
+            .attr("class", "states")
+            .selectAll("path")
+            .data(topojson.feature(us, us.objects.states).features)
+            // .data(stateArray)
+            .enter().append("path")
+            .attr('id', d => States[d.id])
+            .attr("d", path)
+            .attr('stroke', 'black')
+            .attr('fill', function (d) {
+                console.log(d);
+                if (d.id in States) {
+                    let stateCode = States[d.id]
+                    let stateInfo = stateList[stateCode]
+                    let gradRate = stateInfo[2]
+                    return colorScale(gradRate);
+                }
+            }
+            );
+    }
+
+    createStateList(data) {
         let stateList = {};
-        console.log(data[0])
+        console.log(data[0]);
         data.forEach(element => {
             if (!(element.STABBR in stateList)) {
-                stateList[element.STABBR] = [0, 0, 0]
+                stateList[element.STABBR] = [0, 0, 0];
             }
             else {
                 // console.log(element.C150_4)
                 if (element.C150_4 != 'NULL' && element.C150_4 != null) {
 
-                    stateList[element.STABBR][0] += parseFloat(element.C150_4)
-                    stateList[element.STABBR][1] += 1
+                    stateList[element.STABBR][0] += parseFloat(element.C150_4);
+                    stateList[element.STABBR][1] += 1;
                 }
 
             }
@@ -99,46 +133,12 @@ class Map {
         for (const [key, value] of Object.entries(stateList)) {
             value[2] = value[0] / value[1];
             if (value[1] == 0) {
-                value[2] = 0
+                value[2] = 0;
             }
-            // if (value[2] == null || value[2] == 'NaN' || value[2] == NaN || value[2] == 'NULL') {
-            //     value[2] = 0
-            // }
-            // console.log(value[2])
         }
 
-        // stateList.forEach(element => {
-        //     element[2] = element[0] / element[1];
-        // });
-
-        console.log(stateList['UT'][2])
-        console.log(this.colorScale(stateList['UT'][2]))
-
-
-
-        d3.json("https://d3js.org/us-10m.v1.json").then(us => {
-            // console.log(topojson.feature(us, us.objects.states).features[0].id)
-
-            svg.append("g")
-                .attr("class", "states")
-                .selectAll("path")
-                .data(topojson.feature(us, us.objects.states).features)
-                .enter().append("path")
-                .attr('id', d => States[d.id])
-                .attr("d", path)
-                .attr('fill', d => {
-                    if (d.id in stateList) {
-                        console.log('color', this.colorScale(stateList[d.id][2]))
-                        return this.colorScale(stateList[d.id][2]);
-                    }
-                }
-                )
-                .attr('stroke', 'black')
-
-            svg.append("path")
-                .attr("class", "state-borders")
-                .attr("d", path(topojson.mesh(us, us.objects.states, function (a, b) { return a !== b; })));
-        });
+        console.log(stateList['UT'][2]);
+        return stateList;
     }
 }
 
