@@ -27,7 +27,10 @@ class SpendChart {
      * Creates a chart with circles to filter a range of spending, populates text content and other required elements for the Spend Chart
      */
     update (map, dropouts) {
-        
+        // this.svg.empty();
+        // d3.select("#spend-chart").innerHTML = '';
+        this.svg.selectAll("*").remove();
+
       var spendData = dropouts.filter(function(k){return !isNaN(+k.INEXPFTE);}).map(function(d){ return d.INEXPFTE });
       var v1 = (d3.min(spendData));
       var v2 = (d3.max(spendData));
@@ -64,7 +67,7 @@ class SpendChart {
             .attr("x", x)
             .attr("text-anchor", "middle")
             .style("font-weight", "bold")
-            .text(d => d);
+            .text(d => '$' + d.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
         
         var handle = slider.selectAll("rect")
             .data([0, 1])
@@ -112,17 +115,15 @@ class SpendChart {
                 .attr("x1", 10+x(v1))
                 .attr("x2", 10+x(v2))
         
-          selectSpending(x(v), v2); 
+          selectSpending(v1, v2); 
         }
         function selectSpending(lower, upper) {
             console.log(lower)
             var data = dropouts.filter(function(k){return !isNaN(+k.INEXPFTE);})
                 .filter(function(k){return (+k.INEXPFTE > lower && +k.INEXPFTE < upper);});
-                // .then(data => {
-                //     this.map.update(data); //TODO send chart instances
-                //   });
             map.update(data);
         }
+        
     }
   }
   
