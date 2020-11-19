@@ -22,6 +22,39 @@ body {
     resize: 4
 }
 
+.sideBar {
+    /* display: inline-block; */
+    /* width: 30%;
+    float:right; */
+    height: 420;
+}
+
+#us-line-chart {
+  background-color:"black";
+  /* position:relative;
+  display:inline-block;
+  vertical-align: top; */
+}
+
+#st-line-chart {
+  background-color:"blue";
+  /* position:relative;
+  display:inline-block;
+  vertical-align: bottom; */
+}
+
+.leftColumn {
+  width: 60%;
+  /* height: 100%;
+  float: left; */
+}
+
+.rightColumn {
+  /* float: right; */
+  width: 40%;
+  /* margin-right: 2%; */
+}
+
 /***************************************/
 /*            Map Styling              */
 

@@ -9,7 +9,7 @@ class YearChart {
    * @param electionInfo instance of ElectionInfo
    * @param yearlyDropouts over years
    */
-  constructor(map, spendChart, yearlyDropouts) {
+  constructor (map,spendChart, yearlyDropouts,usline,stline) {
 
     //Todo: Create YearChart instance
     this.spendChart = spendChart;
@@ -17,7 +17,11 @@ class YearChart {
 
     // the data
     this.yearlyDropouts = yearlyDropouts;
-
+    // US line chart instance
+    this.usLineChart = usline;
+    // State line chart instance
+    this.stLineChart = stline;
+    
     // Initializes the svg elements required for this chart
     this.margin = { top: 10, right: 20, bottom: 30, left: 50 };
     let divyearChart = d3.select("#year-chart").classed("fullView", true);
@@ -114,8 +118,19 @@ class YearChart {
 
     d3.csv(`data/${d.YEAR}.csv`).then(year => {
       this.spendChart.update(map, year); //TODO send chart instances
+      if (d.YEAR == 2018){
+        d3.csv(`data/${parseInt(d.YEAR)-1}.csv`).then(other =>{
+          this.usLineChart.update([year,other],[parseInt(d.YEAR),parseInt(d.YEAR)-1]);
+          this.stLineChart.update([year,other],[parseInt(d.YEAR),parseInt(d.YEAR)+1]);
+        })
+      }
+      else {
+        d3.csv(`data/${parseInt(d.YEAR)+1}.csv`).then(other =>{
+          this.usLineChart.update([year,other],[parseInt(d.YEAR),parseInt(d.YEAR)+1]);
+          this.stLineChart.update([year,other],[parseInt(d.YEAR),parseInt(d.YEAR)+1]);
+        })
+      }
     });
-
   }
 
 }
