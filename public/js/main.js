@@ -1,10 +1,10 @@
 
 // TODO: Create instances of all charts
 let spendChart = new SpendChart();
-let usLine = new LineChart('us-line-chart');
-let stLine = new LineChart('st-line-chart');
+let usLine = new LineChart('us');
+let stLine = new LineChart('st');
 // Load the data corresponding to all the years.
-d3.csv("data/yearwiseDropouts.csv", function (yearlyDropouts) {
+d3.csv("data/yearwiseDropouts.csv").then(yearlyDropouts => {
   let yearChart = new YearChart(spendChart, yearlyDropouts,usLine,stLine);// TODO: pass chart instances 
   yearChart.update();
 
