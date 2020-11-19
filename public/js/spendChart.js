@@ -3,8 +3,6 @@ class SpendChart {
 
     /**
      * Constructor for the Year Chart
-     * TODO: add chart vars
-     * @param dropouts over years
      */
     constructor () {
   
@@ -23,34 +21,27 @@ class SpendChart {
       this.svg = divspendChart.append("svg")
         .attr("width", this.svgWidth)
         .attr("height", this.svgHeight);
-  
-      this.selected = null;
     }
   
     /**
      * Creates a chart with circles to filter a range of spending, populates text content and other required elements for the Spend Chart
      */
-    update (dropouts) {
+    update (map, dropouts) {
         
-      // the data
-      this.dropouts = dropouts;
-      var v1 = (d3.min(dropouts.filter(function(k){return !isNaN(+k.INEXPFTE);}).map(function(d){ return d.INEXPFTE })));
-      var v2 = (d3.max(dropouts.filter(function(k){return !isNaN(+k.INEXPFTE);}).map(function(d){ return d.INEXPFTE })));
-        var sliderVals=[v1, v2],
-            width = 400,
-            svg = d3.select(".slider-holder").append("svg")
-                .attr('width', width+30)
-                .attr('height', 50);
+      var spendData = dropouts.filter(function(k){return !isNaN(+k.INEXPFTE);}).map(function(d){ return d.INEXPFTE });
+      var v1 = (d3.min(spendData));
+      var v2 = (d3.max(spendData));
+        var sliderVals=[v1, v2];
         
         var x = d3.scaleLinear()
             .domain([0, v2]) //10
-            .range([0, width])
+            .range([0, this.svgWidth - 30])
             .clamp(true);
         
         var xMin=x(0),
             xMax=x(v2) //10
         
-        var slider = svg.append("g")
+        var slider = this.svg.append("g")
             .attr("class", "slider")
             .attr("transform", "translate(5,20)");
         
@@ -123,21 +114,14 @@ class SpendChart {
         
           selectSpending(v1, v2); 
         }
-  
+        function selectSpending(lower, upper) {
+            var data = dropouts.filter(function(k){return !isNaN(+k.INEXPFTE);})
+                .filter(function(k){return (+k.INEXPFTE > lower && +k.INEXPFTE < upper);});
+                // .then(data => {
+                //     this.map.update(data); //TODO send chart instances
+                //   });
+            map.update(data);
+        }
     }
-  
-    selectSpending(lower, upper, d) {
-    //   if (this.selected) {
-    //     this.selected.classed('highlighted', false);
-    //   }
-    //   this.selected = selected;
-    //   this.selected.classed('highlighted', true);
-  
-    //   d3.csv(lower <= d.INEXPFTE >= upper).then(this.dropouts => {
-    //     // TODO: update charts here
-    //   });
-      
-    }
-
   }
   

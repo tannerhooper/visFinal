@@ -4,14 +4,17 @@ class YearChart {
   /**
    * Constructor for the Year Chart
    * TODO: add chart vars
+   * @param map
    * @param spendChart
    * @param electionInfo instance of ElectionInfo
    * @param yearlyDropouts over years
    */
-  constructor(spendChart, yearlyDropouts) {
+  constructor(map, spendChart, yearlyDropouts) {
 
     //Todo: Create YearChart instance
     this.spendChart = spendChart;
+    this.map = map;
+
     // the data
     this.yearlyDropouts = yearlyDropouts;
 
@@ -110,7 +113,7 @@ class YearChart {
     this.selected.classed('highlighted', true);
 
     d3.csv(`data/${d.YEAR}.csv`).then(year => {
-      this.spendChart.update(year); //TODO send chart instances
+      this.spendChart.update(map, year); //TODO send chart instances
     });
 
   }
