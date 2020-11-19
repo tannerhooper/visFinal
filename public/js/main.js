@@ -8,11 +8,7 @@ let usLine = new LineChart('us');
 let stLine = new LineChart('st');
 // Load the data corresponding to all the years.
 d3.csv("data/yearwiseDropouts.csv").then(yearlyDropouts => {
-<<<<<<< HEAD
   let yearChart = new YearChart(map, spendChart, yearlyDropouts,usLine,stLine);// TODO: pass chart instances 
-=======
-  let yearChart = new YearChart(map, spendChart, yearlyDropouts);// TODO: pass USlineChart, STlineChart 
->>>>>>> 6225f0e4eaf977edac2b8f1afa04d67973e4be6a
   yearChart.update();
 
   let s = d3.select('#y2018');
