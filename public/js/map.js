@@ -5,11 +5,9 @@ class Map {
        * TODO: add chart vars
        * @param data over years
        */
-    constructor(data) {
-        this.data = data;
-    }
 
-    update() {
+    update(data) {
+        this.data = data;
         var svg = d3.select("#map");
 
         var path = d3.geoPath();
