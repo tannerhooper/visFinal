@@ -27,9 +27,7 @@ class LineChart {
 
         // Add X axis --> it is a date format
         var x = d3.scaleTime()
-            .domain(d3.extent(years, d => { 
-                console.log(d)
-                return d }))
+            .domain(d3.extent(years, d => { return d }))
             .range([ 0, this.svgWidth ]);
         this.svg.append("g")
             .attr("transform", `translate(${this.margin.left},${this.svgHeight-this.margin.bottom})`)
@@ -44,11 +42,21 @@ class LineChart {
             .call(d3.axisLeft(y));
 
         // Add the line
-        this.svg.append("path")
+        var line = this.svg.append("path")
             .datum(mapping)
             .attr("fill", "none")
             .attr("stroke", "steelblue")
             .attr("stroke-width", 1.5)
+            .attr("d", d3.line()
+            .x(d => { return x(d.yr)+this.margin.left })
+            .y(d => { return y(d.avg) })
+            )
+
+        line.selectAll('path')
+            .datum(mapping)
+            .enter()
+            .transition()
+            .duration(1000)
             .attr("d", d3.line()
             .x(d => { return x(d.yr)+this.margin.left })
             .y(d => { return y(d.avg) })
