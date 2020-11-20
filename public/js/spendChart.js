@@ -27,8 +27,6 @@ class SpendChart {
      * Creates a chart with circles to filter a range of spending, populates text content and other required elements for the Spend Chart
      */
     update (map, dropouts) {
-        // this.svg.empty();
-        // d3.select("#spend-chart").innerHTML = '';
         this.svg.selectAll("*").remove();
 
       var spendData = dropouts.filter(function(k){return !isNaN(+k.INEXPFTE);}).map(function(d){ return d.INEXPFTE });

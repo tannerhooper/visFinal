@@ -117,7 +117,9 @@ class YearChart {
     this.selected.classed('highlighted', true);
 
     d3.csv(`data/${d.YEAR}.csv`).then(year => {
-      this.spendChart.update(map, year); //TODO send chart instances
+      this.spendChart.update(map, year); 
+      this.map.update(year); //TODO send chart instances
+
       if (d.YEAR == 2018){
         d3.csv(`data/${parseInt(d.YEAR)-1}.csv`).then(other =>{
           this.usLineChart.update([year,other],[parseInt(d.YEAR),parseInt(d.YEAR)-1]);
