@@ -25,7 +25,7 @@ class LineChart {
             avg.push( parseFloat(((d3.sum(data[t].map(d => {return d.C150_4}))/data[t].length)*100).toFixed(2)) )
         }
         let mapping = avg.map((a,i) => {return {avg:a,yr:years[i]}})
-        console.log(mapping)
+        // console.log(mapping)
 
         // Add X axis --> it is a date format
         var x = d3.scaleTime()
