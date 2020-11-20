@@ -16,6 +16,8 @@ class LineChart {
     }
 
     update(data,years){
+        
+        this.svg.selectAll("*").remove();
         let avg = [];
         // let avg = [50,40,90,80,200,20];
         // years = [2012,2013,2014,2015,2016,2017];
