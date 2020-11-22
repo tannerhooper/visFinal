@@ -35,7 +35,7 @@ class LineChart {
         // Add X axis --> it is a date format
         var x = d3.scaleTime()
             .domain(d3.extent(mapping, d => d.yr))
-            .range([ 0, this.svgWidth ]);
+            .range([ 0, this.svgWidth- this.margin.left - this.margin.right ]);
         this.svg.append("g")
             .attr("transform", `translate(${this.margin.left},${this.svgHeight-this.margin.bottom})`)
             .call(d3.axisBottom(x).tickFormat(d3.format('d')));
