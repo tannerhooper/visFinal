@@ -15,21 +15,26 @@ class LineChart {
             .attr('width',this.svgWidth).attr('height',this.svgHeight)
     }
 
-    update(data,years){
-        
+    update(data,years,init = false){
         this.svg.selectAll("*").remove();
         let avg = [];
-        // let avg = [50,40,90,80,200,20];
-        // years = [2012,2013,2014,2015,2016,2017];
-        for (let t in data){
-            avg.push( parseFloat(((d3.sum(data[t].map(d => {return d.C150_4}))/data[t].length)*100).toFixed(2)) )
+        let mapping;
+        if (!init){
+            for (let t in data){
+                let tmp = data[t].filter(d => d.C150_4 !== "NULL")
+                let s = d3.sum(tmp.map(d => {return d.C150_4}))
+                avg.push( ((s / tmp.length)*100).toFixed(2) )
+            }
+            mapping = avg.map((a,i) => {return {avg:parseFloat(a),yr:years[i]}})
         }
-        let mapping = avg.map((a,i) => {return {avg:a,yr:years[i]}})
-        // console.log(mapping)
+        else {
+            mapping = data.map((a,i) => {return {avg:parseFloat(a),yr:years[i]}})
+        }
+        console.log(mapping)
 
         // Add X axis --> it is a date format
         var x = d3.scaleTime()
-            .domain(d3.extent(years, d => { return d }))
+            .domain(d3.extent(mapping, d => d.yr))
             .range([ 0, this.svgWidth ]);
         this.svg.append("g")
             .attr("transform", `translate(${this.margin.left},${this.svgHeight-this.margin.bottom})`)
@@ -37,31 +42,21 @@ class LineChart {
 
         // Add Y axis
         var y = d3.scaleLinear()
-            .domain([0, d3.max(avg, d => { return d })])
+            .domain([0, d3.max(mapping, d => d.avg)])
             .range([ this.svgHeight-this.margin.bottom, this.margin.top ]);
         this.svg.append("g")
             .attr("transform", `translate(${this.margin.left},0)`)
             .call(d3.axisLeft(y));
 
         // Add the line
-        var line = this.svg.append("path")
+        this.svg.append("path")
             .datum(mapping)
             .attr("fill", "none")
             .attr("stroke", "steelblue")
             .attr("stroke-width", 1.5)
             .attr("d", d3.line()
-            .x(d => { return x(d.yr)+this.margin.left })
-            .y(d => { return y(d.avg) })
-            )
-
-        line.selectAll('path')
-            .datum(mapping)
-            .enter()
-            .transition()
-            .duration(1000)
-            .attr("d", d3.line()
-            .x(d => { return x(d.yr)+this.margin.left })
-            .y(d => { return y(d.avg) })
+            .x(d => x(d.yr)+this.margin.left)
+            .y(d => y(d.avg))
             )
     }
 }

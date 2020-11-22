@@ -13,6 +13,11 @@ d3.csv("data/yearwiseDropouts.csv").then(yearlyDropouts => {
   let yearChart = new YearChart(map, spendChart, yearlyDropouts, usLine, stLine);// TODO: pass chart instances 
   yearChart.update();
 
+  let data = yearlyDropouts.map(d => {return parseFloat(d.Completion)})
+  let years = yearlyDropouts.map(d => {return parseInt(d.YEAR)})
+
+  usLine.update(data,years,true)
+
   let s = d3.select('#y2018');
   yearChart.selectYear(s, s.data()[0]);
 

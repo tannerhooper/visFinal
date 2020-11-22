@@ -122,13 +122,11 @@ class YearChart {
 
       if (d.YEAR == 2018){
         d3.csv(`data/${parseInt(d.YEAR)-1}.csv`).then(other =>{
-          this.usLineChart.update([year,other],[parseInt(d.YEAR),parseInt(d.YEAR)-1]);
           this.stLineChart.update([year,other],[parseInt(d.YEAR),parseInt(d.YEAR)-1]);
         })
       }
       else {
         d3.csv(`data/${parseInt(d.YEAR)+1}.csv`).then(other =>{
-          this.usLineChart.update([year,other],[parseInt(d.YEAR),parseInt(d.YEAR)+1]);
           this.stLineChart.update([year,other],[parseInt(d.YEAR),parseInt(d.YEAR)+1]);
         })
       }
