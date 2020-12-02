@@ -1,5 +1,9 @@
 body {
-	font: 11px sans-serif;
+  font: 11px sans-serif;
+  background-image: url('http://libraries.ne.gov/york/files/2016/05/Graduation-Background-Wallpaper-Hd-3.jpg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
 }
 
 .yeartext{
