@@ -39,6 +39,19 @@ class YearChart {
     this.selected = null;
   }
 
+//   move(x) {
+//     return function(event) {
+//         event.preventDefault();
+//         momentum = [momentum[0] + x, momentum[1] + y];
+//     };
+//   }
+
+// this.svg.call(d3.keybinding()
+//     .on('←', move(-1))
+//     .on('↑', move(1))
+//     .on('→', move(1))
+//     .on('↓', move(-1)));
+
   /**
    * Creates a chart with circles representing each year, populates text content and other required elements for the Year Chart
    */
