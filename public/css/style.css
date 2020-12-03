@@ -1,6 +1,6 @@
 body {
   font: 11px sans-serif;
-  background-image: url('http://libraries.ne.gov/york/files/2016/05/Graduation-Background-Wallpaper-Hd-3.jpg');
+  background-image: url('https://images.homedepot-static.com/productImages/af0d6229-506e-4b90-bcbe-6efaf49113a7/svn/light-beige-ivy-hill-tile-clay-tile-ext3rd101045-64_1000.jpg');
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
@@ -48,6 +48,8 @@ body {
 }
 
 .leftColumn {
+  float:right;
+
   width: 60%;
   /* height: 100%;
   float: left; */
