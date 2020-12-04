@@ -20,7 +20,9 @@ class List {
             .text(function (d) {
                 ct += 1
                 return ct + ".  School: " + d.INSTNM + "   Graduation Rate: " + d.C150_4;
-            });
+            })
+            .attr("align","right");
+        
     }
 
 }
