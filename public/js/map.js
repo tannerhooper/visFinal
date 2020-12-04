@@ -1,15 +1,16 @@
 class Map {
-
     /**
        * Constructor for the Year Chart
        * TODO: add chart vars
        * @param data over years
        */
+    constructor(stLine){
+        this.stLine = stLine;
+    }
 
     update(data) {
         // d3.selectAll('path').remove();
         this.data = data;
-
 
         let States = {
             "02": "AK",
@@ -88,7 +89,6 @@ class Map {
                 .interpolator(range);
             // .range(range)
 
-
             this.createMap(svg, us, States, path, colorScale, stateList);
 
             // this.createLegend(legend_width, legend_height);
@@ -109,8 +109,6 @@ class Map {
 
             // svg.select(".legendQuant")
             //     .call(colorLegend);
-
-
             svg.append("path")
                 .attr("class", "state-borders")
                 .attr("d", path(topojson.mesh(us, us.objects.states, function (a, b) { return a !== b; })));
@@ -183,21 +181,22 @@ class Map {
             .attr("class", "states")
             .selectAll("path")
             .data(topojson.feature(us, us.objects.states).features)
-            // .data(stateArray)
             .enter().append("path")
             .attr('id', d => States[d.id])
             .attr("d", path)
             .attr('stroke', 'black')
             .attr('fill', function (d) {
-                // console.log(d);
                 if (d.id in States) {
                     let stateCode = States[d.id]
                     let stateInfo = stateList[stateCode]
                     let gradRate = stateInfo[2]
                     return colorScale(gradRate);
                 }
-            }
-            );
+            })
+            .on('click',d => {
+                console.log(States[d.id])
+            })
+            ;
     }
 
     createStateList(data) {
@@ -214,7 +213,6 @@ class Map {
                     stateList[element.STABBR][0] += parseFloat(element.C150_4);
                     stateList[element.STABBR][1] += 1;
                 }
-
             }
         });
 
@@ -224,7 +222,6 @@ class Map {
                 value[2] = 0;
             }
         }
-
         // console.log(stateList['UT'][2]);
         return stateList;
     }

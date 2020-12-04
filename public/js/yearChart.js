@@ -118,8 +118,6 @@ class YearChart {
       .text(d => d.YEAR)
       .classed('yeartext', true)
       ;
-
-
   }
 
   selectYear(selected, d) {
@@ -133,16 +131,16 @@ class YearChart {
       this.spendChart.update(map, year); 
       this.map.update(year); //TODO send chart instances
 
-      if (d.YEAR == 2018){
-        d3.csv(`data/${parseInt(d.YEAR)-1}.csv`).then(other =>{
-          this.stLineChart.update([year,other],[parseInt(d.YEAR),parseInt(d.YEAR)-1]);
-        })
-      }
-      else {
-        d3.csv(`data/${parseInt(d.YEAR)+1}.csv`).then(other =>{
-          this.stLineChart.update([year,other],[parseInt(d.YEAR),parseInt(d.YEAR)+1]);
-        })
-      }
+      // if (d.YEAR == 2018){
+      //   d3.csv(`data/${parseInt(d.YEAR)-1}.csv`).then(other =>{
+      //     this.stLineChart.update([year,other],[parseInt(d.YEAR),parseInt(d.YEAR)-1]);
+      //   })
+      // }
+      // else {
+      //   d3.csv(`data/${parseInt(d.YEAR)+1}.csv`).then(other =>{
+      //     this.stLineChart.update([year,other],[parseInt(d.YEAR),parseInt(d.YEAR)+1]);
+      //   })
+      // }
     });
   }
 
