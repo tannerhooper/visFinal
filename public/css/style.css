@@ -16,6 +16,19 @@ body {
     stroke: #FFF;
 }
 
+#year-chart{
+  background-color: white;
+  border-radius: 0.5%;
+  border: solid black 4px;
+}
+
+#spend-chart{
+  margin-bottom: 1%;
+  background-color: white;
+  border-radius: 0.5%;
+  border: solid black 4px;
+}
+
 .dots{
     stroke: #A0A0A0;
     stroke-dasharray: 2,2;
@@ -49,15 +62,21 @@ body {
 
 .leftColumn {
   float:right;
-
   width: 60%;
+  background-color: white;
+  border-radius: 0.5%;
+  border: solid black 4px;
+}
   /* height: 100%;
   float: left; */
-}
+
 
 .rightColumn {
   /* float: right; */
-  width: 40%;
+  width: 38%;
+  background-color: white;
+  border-radius: 0.5%;
+  border: solid black 4px;
   /* margin-right: 2%; */
 }
 
