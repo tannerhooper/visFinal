@@ -1,9 +1,13 @@
 class LineChart {
-    //US:
-    //ST:
-    constructor(type){
+    /**
+     * Constructor for the Line Chart
+     * @param type: the type of the chart
+     * @param allYears: optional parameter that contains the data for all the years
+     */
+    constructor(type,allYears = null){
         this.chart = d3.select(`#${type}-line-chart`).classed("sideBar",true);
-
+        this.type = type;
+        this.allYears = allYears
         // set the dimensions and margins of the graph
         this.margin = {top: 10, right: 30, bottom: 20, left: 40},
 
@@ -15,22 +19,27 @@ class LineChart {
             .attr('width',this.svgWidth).attr('height',this.svgHeight)
     }
 
-    update(data,years,init = false){
+    update(data,years,init = false,curSt = 'UT'){
         this.svg.selectAll("*").remove();
         let avg = [];
         let mapping;
         if (!init){
-            for (let t in data){
-                let tmp = data[t].filter(d => d.C150_4 !== "NULL")
-                let s = d3.sum(tmp.map(d => {return d.C150_4}))
-                avg.push( ((s / tmp.length)*100).toFixed(2) )
+            if (this.type === 'st'){
+                // console.log(this.allYears)
+                for (let t in this.allYears){
+                    let tmp = this.allYears[t].filter(d => d.STABBR === curSt && d.C150_4 !== "NULL")
+                    // if (t < 3)console.log(tmp)
+                    let s = d3.sum(tmp.map(d => {return d.C150_4}))
+                    // if (t<5)console.log(s)
+                    avg.push( ((s / tmp.length)*100).toFixed(2) )
+                }
+                mapping = avg.map((a,i) => {return {avg:parseFloat(a),yr:years[i]}})
             }
-            mapping = avg.map((a,i) => {return {avg:parseFloat(a),yr:years[i]}})
         }
         else {
             mapping = data.map((a,i) => {return {avg:parseFloat(a),yr:years[i]}})
         }
-        console.log(mapping)
+        // if (this.type == 'st') console.log(mapping)
 
         // Add X axis --> it is a date format
         var x = d3.scaleTime()
