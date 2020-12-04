@@ -46,6 +46,15 @@ body {
     /* width: 500; */
 }
 
+#top-schools{
+  float: right;
+  margin-top: 10%;
+  margin-right: 10%;
+  align-items: center;
+  align-content: center;
+  
+}
+
 #us-line-chart {
   background-color:"black";
   /* position:relative;

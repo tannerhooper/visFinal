@@ -10,6 +10,7 @@ class Map {
         // d3.selectAll('path').remove();
         this.data = data;
 
+
         let States = {
             "02": "AK",
             "01": "AL",
