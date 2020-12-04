@@ -41,9 +41,5 @@ Promise.all(calls).then(data => {
     let s = d3.select(`#y${yr}`);
     yearChart.selectYear(s, s.data()[0]);
 
-    d3.csv(`data/${yr}.csv`).then(data => {
-      map.update(data);
-      list.update(data);
-    })
   });
 });
