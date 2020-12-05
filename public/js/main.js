@@ -1,14 +1,7 @@
-
 // Create instances of all charts
 let list = new List();
-// let USlineChart = new LineChart('us');
-// let STlineChart = new LineChart('st');
 let spendChart = new SpendChart();
 let allYears = {}
-
-// for (let i = 1997; i < 2019; i++){
-//   d3.csv(`data/${i}.csv`).then(d => allYears[i] = d)
-// }
 calls = []
 for (let i = 1997; i < 2019; i++){
   calls.push(d3.csv(`data/${i}.csv`))
@@ -26,8 +19,6 @@ Promise.all(calls).then(data => {
 
   // Load the data corresponding to all the years.
   d3.csv("data/yearwiseDropouts.csv").then(yearlyDropouts => {
-    // let yearChart = new YearChart(map, spendChart, yearlyDropouts);// TODO: pass chart instances 
-
     let yearChart = new YearChart(map, spendChart, yearlyDropouts, usLine, stLine);// TODO: pass chart instances 
     yearChart.update();
 
@@ -40,6 +31,5 @@ Promise.all(calls).then(data => {
     yr = 2018
     let s = d3.select(`#y${yr}`);
     yearChart.selectYear(s, s.data()[0]);
-
   });
 });

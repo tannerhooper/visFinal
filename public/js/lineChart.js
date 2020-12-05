@@ -25,12 +25,9 @@ class LineChart {
         let mapping;
         if (!init){
             if (this.type === 'st'){
-                // console.log(this.allYears)
                 for (let t in this.allYears){
                     let tmp = this.allYears[t].filter(d => d.STABBR === curSt && d.C150_4 !== "NULL")
-                    // if (t < 3)console.log(tmp)
                     let s = d3.sum(tmp.map(d => {return d.C150_4}))
-                    // if (t<5)console.log(s)
                     avg.push( ((s / tmp.length)*100).toFixed(2) )
                 }
                 mapping = avg.map((a,i) => {return {avg:parseFloat(a),yr:years[i]}})
@@ -39,7 +36,6 @@ class LineChart {
         else {
             mapping = data.map((a,i) => {return {avg:parseFloat(a),yr:years[i]}})
         }
-        // if (this.type == 'st') console.log(mapping)
 
         // Add X axis --> it is a date format
         var x = d3.scaleTime()
