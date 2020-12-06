@@ -1,14 +1,7 @@
-
 // Create instances of all charts
 let list = new List();
-// let USlineChart = new LineChart('us');
-// let STlineChart = new LineChart('st');
 let spendChart = new SpendChart();
 let allYears = {}
-
-// for (let i = 1997; i < 2019; i++){
-//   d3.csv(`data/${i}.csv`).then(d => allYears[i] = d)
-// }
 calls = []
 for (let i = 1997; i < 2019; i++) {
   calls.push(d3.csv(`data/${i}.csv`))
@@ -20,26 +13,23 @@ Promise.all(calls).then(data => {
     allYears[parseInt(data[yr][0].YEAR)] = data[yr];
   }
 
-  let usLine = new LineChart('us');
-  let stLine = new LineChart('st', allYears);
-  let map = new Map(stLine);
-
   // Load the data corresponding to all the years.
   d3.csv("data/yearwiseDropouts.csv").then(yearlyDropouts => {
-    // let yearChart = new YearChart(map, spendChart, yearlyDropouts);// TODO: pass chart instances 
+    let data = yearlyDropouts.map(d => { return parseFloat(d.Completion) });
+    let years = yearlyDropouts.map(d => { return parseInt(d.YEAR) });
+
+    const usLine = new LineChart('us',null,years);
+    const stLine = new LineChart('st',allYears,years);
+    const map = new Map(stLine);
 
     let yearChart = new YearChart(map, spendChart, yearlyDropouts, usLine, stLine);// TODO: pass chart instances 
     yearChart.update();
 
-    let data = yearlyDropouts.map(d => { return parseFloat(d.Completion) });
-    let years = yearlyDropouts.map(d => { return parseInt(d.YEAR) });
-
-    usLine.update(data, years, true);
-    stLine.update(null, years, false);
+    usLine.update(data,true);
+    stLine.update(null);
 
     let yr = 2018
     let s = d3.select(`#y${yr}`);
     yearChart.selectYear(s, s.data()[0]);
-
   });
 });
