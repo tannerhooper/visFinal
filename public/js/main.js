@@ -13,20 +13,20 @@ Promise.all(calls).then(data => {
     allYears[parseInt(data[yr][0].YEAR)] = data[yr];
   }
 
-  let usLine = new LineChart('us');
-  let stLine = new LineChart('st', allYears);
-  let map = new Map(stLine);
-
   // Load the data corresponding to all the years.
   d3.csv("data/yearwiseDropouts.csv").then(yearlyDropouts => {
-    let yearChart = new YearChart(map, spendChart, yearlyDropouts, usLine, stLine);// TODO: pass chart instances 
-    yearChart.update();
-
     let data = yearlyDropouts.map(d => { return parseFloat(d.Completion) });
     let years = yearlyDropouts.map(d => { return parseInt(d.YEAR) });
 
-    usLine.update(data, years, true);
-    stLine.update(null, years, false);
+    const usLine = new LineChart('us',null,years);
+    const stLine = new LineChart('st',allYears,years);
+    const map = new Map(stLine);
+
+    let yearChart = new YearChart(map, spendChart, yearlyDropouts, usLine, stLine);// TODO: pass chart instances 
+    yearChart.update();
+
+    usLine.update(data,true);
+    stLine.update(null);
 
     let yr = 2018
     let s = d3.select(`#y${yr}`);
