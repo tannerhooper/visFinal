@@ -1,14 +1,16 @@
 class LineChart {
     /**
      * Constructor for the Line Chart
-     * @param type: the type of the chart
+     * @param usData: data for the US average chart
      * @param allYears: optional parameter that contains the data for all the years
+     * @param years: all the data from all the CSV files
      */
-    constructor(type,allYears = null,years){
-        this.chart = d3.select(`#${type}-line-chart`).classed("sideBar",true);
-        this.type = type;
+    constructor(usData,allYears = null,years){
+        this.chart = d3.select(`#st-line-chart`).classed("sideBar",true);
         this.allYears = allYears
         this.years = years
+        this.usData = usData
+        this.type = 'st'
         // set the dimensions and margins of the graph
         this.margin = {top: 10, right: 30, bottom: 20, left: 40},
 
@@ -20,10 +22,11 @@ class LineChart {
             .attr('width',this.svgWidth).attr('height',this.svgHeight)
     }
 
-    update(data,init=false,curSt='UT'){
-        this.svg.selectAll("*").remove();
+    update(init=false,curSt='UT'){
+        this.svg.selectAll("path.stline").remove();
         let avg = [];
         let mapping;
+        let usMapping;
         if (!init){
             if (this.type === 'st'){
                 for (let t in this.allYears){
@@ -33,11 +36,14 @@ class LineChart {
                 }
                 mapping = avg.map((a,i) => {return {avg:parseFloat(a),yr:this.years[i]}})
                 // console.log(mapping)
-                console.log(curSt,d3.max(mapping,d => d.avg),d3.min(mapping,d => d.avg))
+                // console.log(curSt,d3.max(mapping,d => d.avg),d3.min(mapping,d => d.avg))
             }
         }
         else {
-            mapping = data.map((a,i) => {return {avg:parseFloat(a),yr:this.years[i]}})
+            // mapping = usData.map((a,i) => {return {avg:parseFloat(a),yr:this.years[i]}})
+        }
+        if (usData != null) {
+            usMapping = usData.map((a,i) => {return {avg:parseFloat(a),yr:this.years[i]}})
         }
         // console.log(mapping)
 
@@ -120,7 +126,7 @@ class LineChart {
         
         // Add X axis --> it is a date format
         var x = d3.scaleTime()
-            .domain(d3.extent(mapping, d => d.yr))
+            .domain(d3.extent(this.years, d => d))
             .range([ 0, this.svgWidth- this.margin.left - this.margin.right ]);
         this.svg.append("g")
             .attr("transform", `translate(${this.margin.left},${this.svgHeight-this.margin.bottom})`)
@@ -136,12 +142,24 @@ class LineChart {
             .attr("transform", `translate(${this.margin.left},0)`)
             .call(d3.axisLeft(y));
 
-        // Add the line
+        // Add ST line
         this.svg.append("path")
             .datum(mapping)
+            .attr('class','stline')
             .attr("fill", "none")
             .attr("stroke", "steelblue")
-            .attr("stroke-width", 1.5)
+            .attr("stroke-width", 2)
+            .attr("d", d3.line()
+            .x(d => x(d.yr)+this.margin.left)
+            .y(d => y(d.avg))
+            )
+        // Add US line
+        this.svg.append("path")
+            .datum(usMapping)
+            .attr('class','usline')
+            .attr("fill", "none")
+            .attr("stroke", "red")
+            .attr("stroke-width", 2)
             .attr("d", d3.line()
             .x(d => x(d.yr)+this.margin.left)
             .y(d => y(d.avg))

@@ -18,15 +18,15 @@ Promise.all(calls).then(data => {
     let data = yearlyDropouts.map(d => { return parseFloat(d.Completion) });
     let years = yearlyDropouts.map(d => { return parseInt(d.YEAR) });
 
-    const usLine = new LineChart('us',null,years);
-    const stLine = new LineChart('st',allYears,years);
+    // const usLine = new LineChart('us',null,years);
+    const stLine = new LineChart(data,allYears,years);
     const map = new Map(stLine);
 
-    let yearChart = new YearChart(map, spendChart, yearlyDropouts, usLine, stLine);// TODO: pass chart instances 
+    let yearChart = new YearChart(map, spendChart, yearlyDropouts);// TODO: pass chart instances 
     yearChart.update();
 
-    usLine.update(data,true);
-    stLine.update(null);
+    // usLine.update(data,true);
+    stLine.update();
 
     let yr = 2018
     let s = d3.select(`#y${yr}`);
