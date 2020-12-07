@@ -1,11 +1,10 @@
 class Map {
     /**
        * Constructor for the Year Chart
-       * TODO: add chart vars
-       * @param data over years
+       * @param line instance of the Line Chart
        */
-    constructor(stLine){
-        this.stLine = stLine;
+    constructor(line){
+        this.lineChart = line;
     }
 
     update(data) {
@@ -193,9 +192,7 @@ class Map {
                     return colorScale(gradRate);
                 }
             })
-            .on('click',d => {
-                console.log(States[d.id])
-            })
+            .on('click',d => this.lineChart.update(States[d.id]))
             ;
     }
 
@@ -226,5 +223,3 @@ class Map {
         return stateList;
     }
 }
-
-

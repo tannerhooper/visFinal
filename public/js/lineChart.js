@@ -7,12 +7,16 @@ class LineChart {
      */
     constructor(usData,allYears = null,years){
         this.chart = d3.select(`#st-line-chart`).classed("sideBar",true);
-        this.allYears = allYears
-        this.years = years
-        this.usData = usData
-        this.type = 'st'
+        this.usData = usData;
+        this.allYears = allYears;
+        this.years = years;
+
+        this.selState = '';
+        this.bounds = [];
+        this.demoFilter = '';
+
         // set the dimensions and margins of the graph
-        this.margin = {top: 10, right: 30, bottom: 20, left: 40},
+        this.margin = {top: 10, right: 30, bottom: 20, left: 40};
 
         this.svgBounds = this.chart.node().getBoundingClientRect();
         this.svgWidth = this.svgBounds.width - this.margin.left - this.margin.right;
@@ -20,32 +24,48 @@ class LineChart {
 
         this.svg = this.chart.append('svg')
             .attr('width',this.svgWidth).attr('height',this.svgHeight)
+            ;
     }
 
-    update(init=false,curSt='UT'){
-        this.svg.selectAll("path.stline").remove();
-        let avg = [];
-        let mapping;
+    /**
+     * @param {state selected from map} curSt 
+     * @param {filter selected from demographic filter} demoFilter 
+     * @param {lower and upper bounds selected from spend chart} bounds 
+     */
+    update(curSt='UT',demoFilter='C150_4',bounds=[0,9990]){
+        this.svg.selectAll("*").remove();
+        let stAvg = [];
+        let stMapping;
         let usMapping;
-        if (!init){
-            if (this.type === 'st'){
-                for (let t in this.allYears){
-                    let tmp = this.allYears[t].filter(d => d.STABBR === curSt && d.C150_4 !== "NULL")
-                    let s = d3.sum(tmp.map(d => {return d.C150_4}))
-                    avg.push( ((s / tmp.length)*100).toFixed(2) )
+
+        if (curSt !== null) this.selState = curSt;
+        if (bounds !== null) this.bounds = bounds;
+        if (demoFilter !== null) this.demoFilter = demoFilter;
+
+        d3.select('#stAvg').text(`State Average: ${this.selState}`)
+
+        // Computes avg per state
+        for (let t in this.allYears){
+            // let tmp = this.allYears[t].filter(d => d.STABBR === this.selState && d.C150_4 !== "NULL");
+            let demo = this.allYears[t].filter(d => {
+                // if (this.selState == 'WY') console.log(d[this.demoFilter])
+                return d.STABBR === this.selState && d[this.demoFilter] !== 'NULL'
+            });
+            let exp = demo.filter(d => {
+                    if (this.bounds[1] == 9990) return d.INEXPFTE !== 'NULL' && (parseFloat(d.INEXPFTE) > this.bounds[0])
+                    else return d.INEXPFTE !== 'NULL' && (parseFloat(d.INEXPFTE) > this.bounds[0]
+                        && parseFloat(d.INEXPFTE) < this.bounds[1])
                 }
-                mapping = avg.map((a,i) => {return {avg:parseFloat(a),yr:this.years[i]}})
-                // console.log(mapping)
-                // console.log(curSt,d3.max(mapping,d => d.avg),d3.min(mapping,d => d.avg))
+            );
+            if (exp.length === 0) { stAvg.push(0) }
+            else {
+                let s = d3.sum(exp.map(d => { return parseFloat(d[this.demoFilter]) }));
+                stAvg.push( ((s / exp.length)*100).toFixed(2) );
             }
         }
-        else {
-            // mapping = usData.map((a,i) => {return {avg:parseFloat(a),yr:this.years[i]}})
-        }
-        if (usData != null) {
-            usMapping = usData.map((a,i) => {return {avg:parseFloat(a),yr:this.years[i]}})
-        }
-        // console.log(mapping)
+        stMapping = stAvg.map((a,i) => {return {avg:parseFloat(a),yr:this.years[i]}});
+        // if (this.selState == 'WY') console.log(stMapping)
+        usMapping = this.usData.map((a,i) => {return {avg:parseFloat(a),yr:this.years[i]}});
 
         // Code to determine min/max of each state, then min/max of all those together
         let minmax = {
@@ -127,32 +147,35 @@ class LineChart {
         // Add X axis --> it is a date format
         var x = d3.scaleTime()
             .domain(d3.extent(this.years, d => d))
-            .range([ 0, this.svgWidth- this.margin.left - this.margin.right ]);
+            .range([ 0, this.svgWidth- this.margin.left - this.margin.right ])
+            ;
         this.svg.append("g")
             .attr("transform", `translate(${this.margin.left},${this.svgHeight-this.margin.bottom})`)
-            .call(d3.axisBottom(x).tickFormat(d3.format('d')));
+            .call(d3.axisBottom(x).tickFormat(d3.format('d')))
+            ;
 
         // Add Y axis
-        // ymax = 73.29 ymin = 16.62
         var y = d3.scaleLinear()
             // .domain([0, d3.max(mapping, d => d.avg)])
             .domain([0,75])
-            .range([ this.svgHeight-this.margin.bottom, this.margin.top ]);
+            .range([ this.svgHeight-this.margin.bottom, this.margin.top ])
+            ;;
         this.svg.append("g")
             .attr("transform", `translate(${this.margin.left},0)`)
-            .call(d3.axisLeft(y));
-
+            .call(d3.axisLeft(y))
+            ;
+        // console.log(stMapping,usMapping)
         // Add ST line
         this.svg.append("path")
-            .datum(mapping)
+            .datum(stMapping)
             .attr('class','stline')
             .attr("fill", "none")
             .attr("stroke", "steelblue")
             .attr("stroke-width", 2)
             .attr("d", d3.line()
-            .x(d => x(d.yr)+this.margin.left)
-            .y(d => y(d.avg))
-            )
+                .x(d => x(d.yr)+this.margin.left)
+                .y(d => y(d.avg)))
+            ;
         // Add US line
         this.svg.append("path")
             .datum(usMapping)
@@ -161,8 +184,8 @@ class LineChart {
             .attr("stroke", "red")
             .attr("stroke-width", 2)
             .attr("d", d3.line()
-            .x(d => x(d.yr)+this.margin.left)
-            .y(d => y(d.avg))
-            )
+                .x(d => x(d.yr)+this.margin.left)
+                .y(d => y(d.avg)))
+            ;
     }
 }

@@ -1,13 +1,9 @@
 
 class SpendChart {
-
     /**
      * Constructor for the Spend Chart
      */
     constructor () {
-  
-      //Todo: Create Chart instances
-      
       // Initializes the svg elements required for this chart
       this.margin = {top: 10, right: 20, bottom: 30, left: 50};
       let divspendChart = d3.select("#spend-chart").classed("fullView", true);
@@ -26,7 +22,7 @@ class SpendChart {
     /**
      * Creates a chart with circles to filter a range of spending, populates text content and other required elements for the Spend Chart
      */
-    update (map, dropouts) {
+    update (map, dropouts,lineChart) {
         this.svg.selectAll("*").remove();
 
       var spendData = dropouts.filter(function(k){return !isNaN(+k.INEXPFTE);}).map(function(d){ return d.INEXPFTE });
@@ -116,12 +112,11 @@ class SpendChart {
           selectSpending(v1, v2); 
         }
         function selectSpending(lower, upper) {
-            console.log(lower)
             var data = dropouts.filter(function(k){return !isNaN(+k.INEXPFTE);})
                 .filter(function(k){return (+k.INEXPFTE > lower && +k.INEXPFTE < upper);});
             map.update(data);
+            lineChart.update(null,null,[lower,upper])
         }
-        
     }
   }
   
