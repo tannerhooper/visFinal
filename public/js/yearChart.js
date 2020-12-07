@@ -86,7 +86,7 @@ class YearChart {
       .attr('cy', r + 4)
       .attr('r', r)
       .attr('fill', d => {
-        return this.colorScale(+d.Completion)
+        return this.colorScale(+d.C150_4)
       })
       .classed('yearChart', true)
       .attr('id', d => `y${d.YEAR}`)

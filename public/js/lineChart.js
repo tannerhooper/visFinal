@@ -11,6 +11,19 @@ class LineChart {
         this.allYears = allYears;
         this.years = years;
 
+        this.stateMapping = {
+            "AL": "Alabama","AK": "Alaska","AZ": "Arizona","AR": "Arkansas","CA": "California",
+            "CO": "Colorado","CT": "Connecticut","DE": "Delaware","FL": "Florida","GA": "Georgia",
+            "HI": "Hawaii","ID": "Idaho","IL": "Illinois","IN": "Indiana","IA": "Iowa","KS": "Kansas",
+            "KY": "Kentucky","LA": "Louisiana","ME": "Maine","MD": "Maryland","MA": "Massachusetts",
+            "MI": "Michigan","MN": "Minnesota","MS": "Mississippi","MO": "Missouri","MT": "Montana",
+            "NE": "Nebraska","NV": "Nevada","NH": "New Hampshire","NJ": "New Jersey","NM": "New Mexico",
+            "NY": "New York","NC": "North Carolina","ND": "North Dakota","OH": "Ohio","OK": "Oklahoma",
+            "OR": "Oregon","PA": "Pennsylvania","RI": "Rhode Island","SC": "South Carolina","SD": "South Dakota",
+            "TN": "Tennessee","TX": "Texas","UT": "Utah","VT": "Vermont","VA": "Virginia","WA": "Washington",
+            "WV": "West Virginia","WI": "Wisconsin","WY": "Wyoming"
+          }
+
         this.selState = '';
         this.bounds = [];
         this.demoFilter = '';
@@ -23,8 +36,22 @@ class LineChart {
         this.svgHeight = 300;
 
         this.svg = this.chart.append('svg')
-            .attr('width',this.svgWidth).attr('height',this.svgHeight)
-            ;
+            .attr('width',this.svgWidth).attr('height',this.svgHeight);
+        this.legend();
+    }
+
+    legend(){
+        let legs = [{y:0,fill:'red',text:'US'},{y:20,fill:'steelblue',text:'State'}]
+        this.svg.selectAll('rect').data(legs).enter().append('rect')
+            .attr('x',this.svgWidth-this.margin.right-40)
+            .attr('y',d => this.margin.top+d.y)
+            .attr('width',10).attr('height',10)
+            .attr('fill',d => d.fill);
+        this.svg.selectAll('text')
+            .data(legs).enter().append('text')
+            .attr('x',this.svgWidth-this.margin.right-25)
+            .attr('y',d => this.margin.top+d.y+9)
+            .text(d => d.text);
     }
 
     /**
@@ -33,7 +60,7 @@ class LineChart {
      * @param {lower and upper bounds selected from spend chart} bounds 
      */
     update(curSt='UT',demoFilter='C150_4',bounds=[0,9990]){
-        this.svg.selectAll("*").remove();
+        this.svg.selectAll("path.avgline").remove();
         let stAvg = [];
         let stMapping;
         let usMapping;
@@ -42,7 +69,7 @@ class LineChart {
         if (bounds !== null) this.bounds = bounds;
         if (demoFilter !== null) this.demoFilter = demoFilter;
 
-        d3.select('#stAvg').text(`State Average: ${this.selState}`)
+        d3.select('#stAvg').text(`State Average: ${this.stateMapping[this.selState]}`)
 
         // Computes avg per state
         for (let t in this.allYears){
@@ -61,62 +88,18 @@ class LineChart {
                 stAvg.push( ((s / exp.length)*100).toFixed(2) );
             }
         }
-        stMapping = stAvg.map((a,i) => {return {avg:parseFloat(a),yr:this.years[i]}});
-        usMapping = this.usData.map((a,i) => {return {avg:parseFloat(a),yr:this.years[i]}});
+        stMapping = stAvg.map((a,i) => {return { avg:parseFloat(a),yr:this.years[i] }});
+        usMapping = this.usData.map(a => {return { avg:parseFloat(a[this.demoFilter]),yr:a.YEAR }});
 
         // Code to determine min/max of each state, then min/max of all those together
         let minmax = {
             // States: {
-            //     "02": "AK",
-            //     "01": "AL",
-            //     "05": "AR",
-            //     "04": 'AZ',
-            //     "06": 'CA',
-            //     "08": 'CO',
-            //     "09": 'CT',
-            //     "10": 'DE',
-            //     "12": 'FL',
-            //     "13": 'GA',
-            //     "15": 'HI',
-            //     "19": 'IA',
-            //     "16": 'ID',
-            //     "17": 'IL',
-            //     "18": 'IN',
-            //     "20": 'KS',
-            //     "21": 'KY',
-            //     "22": 'LA',
-            //     "25": 'MA',
-            //     "24": 'MD',
-            //     "23": 'ME',
-            //     "26": 'MI',
-            //     "27": 'MN',
-            //     "29": 'MO',
-            //     "28": 'MS',
-            //     "30": 'MT',
-            //     "37": 'NC',
-            //     "38": 'ND',
-            //     "31": 'NE',
-            //     "33": 'NH',
-            //     "34": 'NJ',
-            //     "35": 'NM',
-            //     "32": 'NV',
-            //     "36": 'NY',
-            //     "39": 'OH',
-            //     "40": 'OK',
-            //     "41": 'OR',
-            //     "42": 'PA',
-            //     "44": 'RI',
-            //     "45": 'SC',
-            //     "46": 'SD',
-            //     "47": 'TN',
-            //     "48": 'TX',
-            //     "49": 'UT',
-            //     "51": 'VA',
-            //     "50": 'VT',
-            //     "53": 'WA',
-            //     "55": 'WI',
-            //     "54": 'WV',
-            //     "56": 'WY'
+            //     "02": "AK","01": "AL","05": "AR","04": 'AZ',"06": 'CA',"08": 'CO',"09": 'CT',"10": 'DE',
+            //     "12": 'FL',"13": 'GA',"15": 'HI',"19": 'IA',"16": 'ID',"17": 'IL',"18": 'IN',"20": 'KS',
+            //     "21": 'KY',"22": 'LA',"25": 'MA',"24": 'MD',"23": 'ME',"26": 'MI',"27": 'MN',"29": 'MO',
+            //     "28": 'MS',"30": 'MT',"37": 'NC',"38": 'ND',"31": 'NE',"33": 'NH',"34": 'NJ',"35": 'NM',"32": 'NV',"36": 'NY',
+            //     "39": 'OH',"40": 'OK',"41": 'OR',"42": 'PA',"44": 'RI',"45": 'SC',"46": 'SD',"47": 'TN',
+            //     "48": 'TX',"49": 'UT',"51": 'VA',"50": 'VT',"53": 'WA',"55": 'WI',"54": 'WV',"56": 'WY'
             // },
             // totals: [],
             // boundes: [],
@@ -144,43 +127,37 @@ class LineChart {
         // Add X axis --> it is a date format
         var x = d3.scaleTime()
             .domain(d3.extent(this.years, d => d))
-            .range([ 0, this.svgWidth- this.margin.left - this.margin.right ])
-            ;
+            .range([ 0, this.svgWidth- this.margin.left - this.margin.right ]);
         this.svg.append("g")
             .attr("transform", `translate(${this.margin.left},${this.svgHeight-this.margin.bottom})`)
-            .call(d3.axisBottom(x).tickFormat(d3.format('d')))
-            ;
-
+            .call(d3.axisBottom(x).tickFormat(d3.format('d')));
         // Add Y axis
         var y = d3.scaleLinear()
             .domain([0,75])
-            .range([ this.svgHeight-this.margin.bottom, this.margin.top ])
-            ;;
+            .range([ this.svgHeight-this.margin.bottom, this.margin.top ]);
         this.svg.append("g")
             .attr("transform", `translate(${this.margin.left},0)`)
-            .call(d3.axisLeft(y))
-            ;
+            .call(d3.axisLeft(y));
+
         // Add ST line
         this.svg.append("path")
             .datum(stMapping)
-            .attr('class','stline')
+            .attr('class','avgline')
             .attr("fill", "none")
             .attr("stroke", "steelblue")
             .attr("stroke-width", 2)
             .attr("d", d3.line()
                 .x(d => x(d.yr)+this.margin.left)
-                .y(d => y(d.avg)))
-            ;
+                .y(d => y(d.avg)));
         // Add US line
         this.svg.append("path")
             .datum(usMapping)
-            .attr('class','usline')
+            .attr('class','avgline')
             .attr("fill", "none")
             .attr("stroke", "red")
             .attr("stroke-width", 2)
             .attr("d", d3.line()
                 .x(d => x(d.yr)+this.margin.left)
-                .y(d => y(d.avg)))
-            ;
+                .y(d => y(d.avg)));
     }
 }
