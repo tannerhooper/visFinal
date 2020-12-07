@@ -4,7 +4,7 @@ class Map {
        * TODO: add chart vars
        * @param data over years
        */
-    constructor(stLine){
+    constructor(stLine) {
         this.stLine = stLine;
     }
 
@@ -193,7 +193,7 @@ class Map {
                     return colorScale(gradRate);
                 }
             })
-            .on('click',d => {
+            .on('click', d => {
                 console.log(States[d.id])
             })
             ;
@@ -201,16 +201,27 @@ class Map {
 
     createStateList(data) {
         let stateList = {};
+        let datasetList = { 'C150_4': 'C150_4', 'PELL_COMP_ORIG_YR4_RT': 'PELL_COMP_ORIG_YR4_RT', 'LOAN_COMP_ORIG_YR4_RT': 'LOAN_COMP_ORIG_YR4_RT' }
         // console.log(data[0]);
         data.forEach(element => {
             if (!(element.STABBR in stateList)) {
                 stateList[element.STABBR] = [0, 0, 0];
             }
             else {
-                // console.log(element.C150_4)
-                if (element.C150_4 != 'NULL' && element.C150_4 != null) {
+                // add eval statement based on selected radio parameter.
+                let buttons = document.getElementsByClassName('grad_rate');
+                let dataset = 'element.';
+                for (var i = 0; i < buttons.length; i++) {
+                    if (buttons[i].checked == true) {
+                        // appends column name to dataset. 
+                        console.log(buttons[i].value, typeof (buttons[i].value))
+                        dataset = dataset + buttons[i].value;
+                    }
+                }
+                // console.log(eval(dataset))
+                if (eval(dataset) != 'NULL' && eval(dataset) != null) {
 
-                    stateList[element.STABBR][0] += parseFloat(element.C150_4);
+                    stateList[element.STABBR][0] += parseFloat(eval(dataset));
                     stateList[element.STABBR][1] += 1;
                 }
             }
