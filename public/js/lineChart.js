@@ -46,9 +46,7 @@ class LineChart {
 
         // Computes avg per state
         for (let t in this.allYears){
-            // let tmp = this.allYears[t].filter(d => d.STABBR === this.selState && d.C150_4 !== "NULL");
             let demo = this.allYears[t].filter(d => {
-                // if (this.selState == 'WY') console.log(d[this.demoFilter])
                 return d.STABBR === this.selState && d[this.demoFilter] !== 'NULL'
             });
             let exp = demo.filter(d => {
@@ -64,7 +62,6 @@ class LineChart {
             }
         }
         stMapping = stAvg.map((a,i) => {return {avg:parseFloat(a),yr:this.years[i]}});
-        // if (this.selState == 'WY') console.log(stMapping)
         usMapping = this.usData.map((a,i) => {return {avg:parseFloat(a),yr:this.years[i]}});
 
         // Code to determine min/max of each state, then min/max of all those together
@@ -156,7 +153,6 @@ class LineChart {
 
         // Add Y axis
         var y = d3.scaleLinear()
-            // .domain([0, d3.max(mapping, d => d.avg)])
             .domain([0,75])
             .range([ this.svgHeight-this.margin.bottom, this.margin.top ])
             ;;
@@ -164,7 +160,6 @@ class LineChart {
             .attr("transform", `translate(${this.margin.left},0)`)
             .call(d3.axisLeft(y))
             ;
-        // console.log(stMapping,usMapping)
         // Add ST line
         this.svg.append("path")
             .datum(stMapping)
