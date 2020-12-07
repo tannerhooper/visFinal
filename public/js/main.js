@@ -1,7 +1,7 @@
 // Create instances of all charts
 let list = new List();
 let spendChart = new SpendChart();
-let demographic = new Demographic();
+
 
 let allYears = {}
 calls = []
@@ -28,11 +28,12 @@ Promise.all(calls).then(data => {
     const usLine = new LineChart('us', null, years);
     const stLine = new LineChart('st', allYears, years);
     const map = new Map(stLine);
+    let demographic = new Demographic(map);
 
-    let yearChart = new YearChart(map, spendChart, yearlyDropouts, usLine, stLine);// TODO: pass chart instances 
+    let yearChart = new YearChart(map, spendChart, yearlyDropouts, usLine, stLine, demographic, list);// TODO: pass chart instances 
     yearChart.update();
 
-    // demographic.update(yearChart);
+
 
     usLine.update(data, true);
     stLine.update(null);
@@ -40,5 +41,17 @@ Promise.all(calls).then(data => {
     let yr = 2018
     let s = d3.select(`#y${yr}`);
     yearChart.selectYear(s, s.data()[0]);
+
+    // console.log(data)
+
+    // d3.csv(`data/${d.YEAR}.csv`).then(year => {
+    //   demographic.update(map, year;
+    // });
+
+
+    // demographic.addOnClick(s.data()[0])
+
+
   });
+
 });

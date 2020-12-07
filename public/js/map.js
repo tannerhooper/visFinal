@@ -8,9 +8,21 @@ class Map {
         this.stLine = stLine;
     }
 
+    // var isAlpha = function (ch) {
+    //     return /^[A-Z]$/i.test(ch);
+    // }
+
+    isAlpha(ch) {
+        return /^[A-Z]$/i.test(ch);
+    }
+
     update(data) {
         // d3.selectAll('path').remove();
         this.data = data;
+
+        if (data.length <= 1) {
+            return;
+        }
 
         let States = {
             "02": "AK",
@@ -64,6 +76,13 @@ class Map {
             "54": 'WV',
             "56": 'WY'
         }
+
+        data.forEach(element => {
+            // console.log('h')
+            if (element.LOAN_COMP_ORIG_YR4_RT != 'NULL' && element.LOAN_COMP_ORIG_YR4_RT != 'PrivacySuppressed') {
+                console.log(element.INSTNM, element.LOAN_COMP_ORIG_YR4_RT)
+            }
+        });
 
         var svg = d3.select("#map");
 
@@ -202,30 +221,54 @@ class Map {
     createStateList(data) {
         let stateList = {};
         let datasetList = { 'C150_4': 'C150_4', 'PELL_COMP_ORIG_YR4_RT': 'PELL_COMP_ORIG_YR4_RT', 'LOAN_COMP_ORIG_YR4_RT': 'LOAN_COMP_ORIG_YR4_RT' }
+        let isRadioButton = false
         // console.log(data[0]);
-        data.forEach(element => {
-            if (!(element.STABBR in stateList)) {
-                stateList[element.STABBR] = [0, 0, 0];
-            }
-            else {
-                // add eval statement based on selected radio parameter.
-                let buttons = document.getElementsByClassName('grad_rate');
-                let dataset = 'element.';
-                for (var i = 0; i < buttons.length; i++) {
-                    if (buttons[i].checked == true) {
-                        // appends column name to dataset. 
-                        console.log(buttons[i].value, typeof (buttons[i].value))
-                        dataset = dataset + buttons[i].value;
-                    }
+        console.log(data.length);
+        if (data.length > 10) {
+            data.forEach(element => {
+                if (!(element.STABBR in stateList)) {
+                    stateList[element.STABBR] = [0, 0, 0];
                 }
-                // console.log(eval(dataset))
-                if (eval(dataset) != 'NULL' && eval(dataset) != null) {
+                else {
+                    // add eval statement based on selected radio parameter.
 
-                    stateList[element.STABBR][0] += parseFloat(eval(dataset));
-                    stateList[element.STABBR][1] += 1;
+                    let buttons = document.getElementsByClassName('grad_rate');
+                    let dataset = 'element.';
+                    for (var i = 0; i < buttons.length; i++) {
+                        if (buttons[i].checked == true && buttons[i].value == 'PELL_COMP_ORIG_YR4_RT') {
+                            // appends column name to dataset. 
+                            // console.log(buttons[i].value, typeof (buttons[i].value))
+                            dataset = dataset + buttons[i].value;
+                            isRadioButton = true
+                        }
+                    }
+                    if (!isRadioButton) { dataset = 'element.C150_4' }
+                    // console.log(eval(dataset))
+                    if (isRadioButton) {
+                        console.log(eval(dataset))
+
+                        // if (eval(dataset) != 'NULL' && eval(dataset) != 'PrivacySuppressed') {
+                        if (!this.isAlpha(eval(dataset)) && eval(dataset) != 'NULL') {
+
+                            stateList[element.STABBR][0] += parseFloat(eval(dataset));
+                            stateList[element.STABBR][1] += 1;
+                        }
+                    }
+                    else {
+                        // if (element.C150_4 != 'NULL' && element.C150_4 != 'PrivacySuppressed') {
+                        if (!this.isAlpha(element.C150_4) && element.C150_4 != 'NULL') {
+                            stateList[element.STABBR][0] += parseFloat(element.C150_4);
+                            stateList[element.STABBR][1] += 1;
+                        }
+                    }
+
                 }
             }
-        });
+
+            );
+
+        }
+
 
         for (const [key, value] of Object.entries(stateList)) {
             value[2] = value[0] / value[1];
