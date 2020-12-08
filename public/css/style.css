@@ -58,11 +58,8 @@ body {
     resize: 4
 }
 
-.sideBar {
-    /* display: inline-block; */
-    /* width: 30%;
-    float:right; */
-    /* width: 500; */
+#stAvg {
+  padding-left: 2%;
 }
 
 #top-schools{
@@ -74,20 +71,6 @@ body {
   
 }
 
-#us-line-chart {
-  background-color:"black";
-  /* position:relative;
-  display:inline-block;
-  vertical-align: top; */
-}
-
-#st-line-chart {
-  background-color:"blue";
-  /* position:relative;
-  display:inline-block;
-  vertical-align: bottom; */
-}
-
 .leftColumn {
   float:right;
   width: 60%;
@@ -95,17 +78,12 @@ body {
   border-radius: 0.5%;
   border: solid black 4px;
 }
-  /* height: 100%;
-  float: left; */
-
 
 .rightColumn {
-  /* float: right; */
   width: 38%;
   background-color: white;
   border-radius: 0.5%;
   border: solid black 4px;
-  /* margin-right: 2%; */
 }
 
 /***************************************/

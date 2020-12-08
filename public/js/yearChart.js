@@ -5,22 +5,18 @@ class YearChart {
    * Constructor for the Year Chart
    * TODO: add chart vars
    * @param map
+   * @param line
    * @param spendChart
    * @param electionInfo instance of ElectionInfo
    * @param yearlyDropouts over years
    */
-  constructor(map, spendChart, yearlyDropouts, usline, stline, demographic, list) {
-
+  constructor(map,line,spendChart,yearlyDropouts,demographic,list) {
     //Todo: Create YearChart instance
     this.spendChart = spendChart;
     this.map = map;
-
+    this.line = line;
     // the data
     this.yearlyDropouts = yearlyDropouts;
-    // US line chart instance
-    this.usLineChart = usline;
-    // State line chart instance
-    this.stLineChart = stline;
     // Demographic filter instance
     this.demographic = demographic
     // Top 5 state and country list instance
@@ -93,7 +89,7 @@ class YearChart {
       .attr('cy', r + 4)
       .attr('r', r)
       .attr('fill', d => {
-        return this.colorScale(+d.Completion)
+        return this.colorScale(+d.C150_4)
       })
       .classed('yearChart', true)
       .attr('id', d => `y${d.YEAR}`)
@@ -132,22 +128,10 @@ class YearChart {
     this.selected.classed('highlighted', true);
 
     d3.csv(`data/${d.YEAR}.csv`).then(year => {
-      this.spendChart.update(this.map, year);
-      console.log(year)
-      this.demographic.update(this.map, year)
+      this.spendChart.update(this.map, year,this.line);
+      this.demographic.update(this.map, year,this.line)
       this.map.update(year); //TODO send chart instances
       this.list.update(year)
-      // if (d.YEAR == 2018){
-      //   d3.csv(`data/${parseInt(d.YEAR)-1}.csv`).then(other =>{
-      //     this.stLineChart.update([year,other],[parseInt(d.YEAR),parseInt(d.YEAR)-1]);
-      //   })
-      // }
-      // else {
-      //   d3.csv(`data/${parseInt(d.YEAR)+1}.csv`).then(other =>{
-      //     this.stLineChart.update([year,other],[parseInt(d.YEAR),parseInt(d.YEAR)+1]);
-      //   })
-      // }
     });
   }
-
 }

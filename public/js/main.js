@@ -1,12 +1,10 @@
 // Create instances of all charts
 let list = new List();
 let spendChart = new SpendChart();
-
-
-let allYears = {}
-calls = []
+let allYears = {};
+calls = [];
 for (let i = 1997; i < 2019; i++) {
-  calls.push(d3.csv(`data/${i}.csv`))
+  calls.push(d3.csv(`data/${i}.csv`));
 }
 let buttons = document.getElementsByClassName('grad_rate');
 for (var i = 0; i < buttons.length; i++) {
@@ -25,22 +23,19 @@ Promise.all(calls).then(data => {
     let data = yearlyDropouts.map(d => { return parseFloat(d.Completion) });
     let years = yearlyDropouts.map(d => { return parseInt(d.YEAR) });
 
-    const usLine = new LineChart('us', null, years);
-    const stLine = new LineChart('st', allYears, years);
-    const map = new Map(stLine);
+    // const usLine = new LineChart('us',null,years);
+    const lineChart = new LineChart(yearlyDropouts,allYears,years);
+    const map = new Map(lineChart);
     let demographic = new Demographic(map);
 
-    let yearChart = new YearChart(map, spendChart, yearlyDropouts, usLine, stLine, demographic, list);// TODO: pass chart instances 
+    let yearChart = new YearChart(map,lineChart,spendChart,yearlyDropouts, demographic, list);// TODO: pass chart instances 
     yearChart.update();
 
+    // usLine.update(data,true);
+    lineChart.update();
 
-
-    usLine.update(data, true);
-    stLine.update(null);
-
-    let yr = 2018
+    let yr = 2018;
     let s = d3.select(`#y${yr}`);
     yearChart.selectYear(s, s.data()[0]);
   });
-
 });

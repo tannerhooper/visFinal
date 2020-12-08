@@ -1,11 +1,10 @@
 class Map {
     /**
        * Constructor for the Year Chart
-       * TODO: add chart vars
-       * @param data over years
+       * @param line instance of the Line Chart
        */
-    constructor(stLine) {
-        this.stLine = stLine;
+    constructor(line){
+        this.lineChart = line;
     }
 
     // var isAlpha = function (ch) {
@@ -79,9 +78,9 @@ class Map {
 
         data.forEach(element => {
             // console.log('h')
-            if (element.LOAN_COMP_ORIG_YR4_RT != 'NULL' && element.LOAN_COMP_ORIG_YR4_RT != 'PrivacySuppressed') {
-                console.log(element.INSTNM, element.LOAN_COMP_ORIG_YR4_RT)
-            }
+            // if (element.LOAN_COMP_ORIG_YR4_RT != 'NULL' && element.LOAN_COMP_ORIG_YR4_RT != 'PrivacySuppressed') {
+            //     console.log(element.INSTNM, element.LOAN_COMP_ORIG_YR4_RT)
+            // }
         });
 
         var svg = d3.select("#map");
@@ -195,9 +194,7 @@ class Map {
                     return colorScale(gradRate);
                 }
             })
-            .on('click', d => {
-                console.log(States[d.id])
-            })
+            .on('click',d => this.lineChart.update(States[d.id],null,null))
             ;
     }
 
@@ -205,8 +202,6 @@ class Map {
         let stateList = {};
         let datasetList = { 'C150_4': 'C150_4', 'PELL_COMP_ORIG_YR4_RT': 'PELL_COMP_ORIG_YR4_RT', 'LOAN_COMP_ORIG_YR4_RT': 'LOAN_COMP_ORIG_YR4_RT' }
         let isRadioButton = false
-        // console.log(data[0]);
-        console.log(data.length);
         if (data.length > 10) {
             data.forEach(element => {
                 if (!(element.STABBR in stateList)) {
@@ -228,7 +223,7 @@ class Map {
                     if (!isRadioButton) { dataset = 'element.C150_4' }
                     // console.log(eval(dataset))
                     if (isRadioButton) {
-                        console.log(eval(dataset))
+                        // console.log(eval(dataset))
 
                         // if (eval(dataset) != 'NULL' && eval(dataset) != 'PrivacySuppressed') {
                         if (!this.isAlpha(eval(dataset)) && eval(dataset) != 'NULL') {
@@ -263,5 +258,3 @@ class Map {
         return stateList;
     }
 }
-
-
