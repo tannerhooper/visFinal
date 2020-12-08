@@ -6,7 +6,12 @@ calls = [];
 for (let i = 1997; i < 2019; i++) {
   calls.push(d3.csv(`data/${i}.csv`));
 }
-
+let buttons = document.getElementsByClassName('grad_rate');
+for (var i = 0; i < buttons.length; i++) {
+  if (buttons[i].value == 'C150_4') {
+    buttons[i].checked = true;
+  }
+}
 // Using a Promise instead for reading multiple CSVs
 Promise.all(calls).then(data => {
   for (let yr in data) {
@@ -21,8 +26,9 @@ Promise.all(calls).then(data => {
     // const usLine = new LineChart('us',null,years);
     const lineChart = new LineChart(yearlyDropouts,allYears,years);
     const map = new Map(lineChart);
+    let demographic = new Demographic(map);
 
-    let yearChart = new YearChart(map,lineChart,spendChart,yearlyDropouts);// TODO: pass chart instances 
+    let yearChart = new YearChart(map,lineChart,spendChart,yearlyDropouts, demographic, list);// TODO: pass chart instances 
     yearChart.update();
 
     // usLine.update(data,true);

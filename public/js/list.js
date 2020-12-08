@@ -13,7 +13,13 @@ class List {
             }
         }).slice(0, 5);//top 10 here
 
-        d3.selectAll("national")
+        let list = d3.select("#national")
+            .html("")
+            // .enter()
+            .append("h3")
+            .text("Top 5 US Schools");
+
+        let topTen = list.selectAll('#national')
             .data(topData)
             .enter()
             .append("p")

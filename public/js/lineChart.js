@@ -60,17 +60,20 @@ class LineChart {
      * @param {lower and upper bounds selected from spend chart} bounds 
      */
     update(curSt='UT',demoFilter='C150_4',bounds=[0,9990]){
+        
         this.svg.selectAll("path.avgline").remove();
         let stAvg = [];
         let stMapping;
         let usMapping;
-
+        // console.log(demoFilter)
         if (curSt !== null) this.selState = curSt;
         if (bounds !== null) this.bounds = bounds;
         if (demoFilter !== null) this.demoFilter = demoFilter;
+        // console.log(this.demoFilter)
 
+        // Sets line chart title
         d3.select('#stAvg').text(`State Average: ${this.stateMapping[this.selState]}`)
-
+        
         // Computes avg per state
         for (let t in this.allYears){
             let demo = this.allYears[t].filter(d => {
@@ -88,6 +91,7 @@ class LineChart {
                 stAvg.push( ((s / exp.length)*100).toFixed(2) );
             }
         }
+        
         stMapping = stAvg.map((a,i) => {return { avg:parseFloat(a),yr:this.years[i] }});
         usMapping = this.usData.map(a => {return { avg:parseFloat(a[this.demoFilter]),yr:a.YEAR }});
 
