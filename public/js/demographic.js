@@ -4,7 +4,7 @@ class Demographic {
         this.map = map;
     }
 
-    update(map, data,line) {
+    update(map, data, line, list) {
 
         let button_data = [['Overall', 'C150_4'], ['Pell Grant', 'PELL_COMP_ORIG_YR4_RT'], ['Federal Loan', 'LOAN_COMP_ORIG_YR4_RT']]
 
@@ -25,8 +25,9 @@ class Demographic {
             .attr('id', 'demo_buttons')
             .on('click', d => {
                 let fil = [...document.getElementsByClassName('grad_rate')].filter(x => x.checked == true)[0].value
-                line.update(null,fil)
+                line.update(null, fil)
                 map.update(data)
+                list.update(data)
             })
             .property("checked", function (d, i) { return i === 0; })
             ;
