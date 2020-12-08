@@ -64,8 +64,8 @@ body {
 
 #top-schools{
   float: right;
-  /* margin-top: 10%; */
-  margin-right: 10%;
+  margin-top: 10%;
+  margin-right: 3%;
   align-items: center;
   align-content: center;
   
@@ -73,17 +73,28 @@ body {
 
 .leftColumn {
   float:right;
-  width: 60%;
+  width: 64%;
   background-color: white;
   border-radius: 0.5%;
   border: solid black 4px;
 }
 
 .rightColumn {
-  width: 38%;
+  width: 34%;
   background-color: white;
   border-radius: 0.5%;
   border: solid black 4px;
+}
+
+#map {
+  border: solid lightgray;
+  margin-top: 0.5%;
+  margin-left: 0.5%;
+}
+
+#legend {
+  margin-top: 1%;
+  margin-left: 50%;
 }
 
 /***************************************/

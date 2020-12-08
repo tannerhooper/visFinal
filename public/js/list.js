@@ -25,7 +25,7 @@ class List {
             .append("p")
             .text(function (d) {
                 ct += 1
-                return ct + ".   " + d.INSTNM + "   Graduation Rate: " + d.C150_4;
+                return ct + ".   " + d.INSTNM + "   - : " + d.C150_4;
             })
             .attr("align", "right");
 
