@@ -9,7 +9,7 @@ class YearChart {
    * @param electionInfo instance of ElectionInfo
    * @param yearlyDropouts over years
    */
-  constructor(map, spendChart, yearlyDropouts, usline, stline) {
+  constructor(map, spendChart, yearlyDropouts, usline, stline, demographic, list) {
 
     //Todo: Create YearChart instance
     this.spendChart = spendChart;
@@ -21,6 +21,10 @@ class YearChart {
     this.usLineChart = usline;
     // State line chart instance
     this.stLineChart = stline;
+    // Demographic filter instance
+    this.demographic = demographic
+    // Top 5 state and country list instance
+    this.list = list
 
     // Initializes the svg elements required for this chart
     this.margin = { top: 10, right: 20, bottom: 30, left: 50 };
@@ -129,8 +133,10 @@ class YearChart {
 
     d3.csv(`data/${d.YEAR}.csv`).then(year => {
       this.spendChart.update(this.map, year);
+      console.log(year)
+      this.demographic.update(this.map, year)
       this.map.update(year); //TODO send chart instances
-
+      this.list.update(year)
       // if (d.YEAR == 2018){
       //   d3.csv(`data/${parseInt(d.YEAR)-1}.csv`).then(other =>{
       //     this.stLineChart.update([year,other],[parseInt(d.YEAR),parseInt(d.YEAR)-1]);
