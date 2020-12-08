@@ -5,7 +5,7 @@ class LineChart {
      * @param years: all the data from all the CSV files
      */
     constructor(allYears = null,years){
-        this.chart = d3.select(`#st-line-chart`).classed("sideBar",true);
+        this.chart = d3.select(`#line-chart`).classed("sideBar",true);
         this.allYears = allYears;
         this.years = years;
 
@@ -95,12 +95,10 @@ class LineChart {
             });
             usTots.push(usExp.map(d => d[this.demoFilter]));
         }
-        // console.log(usTots)
         let usAvg = usTots.map((d,i) => {
             let tmp = ((d3.sum(d)/d.length)*100).toFixed(2);
             return {avg:parseFloat(tmp),yr:this.years[i]}
         })
-        // console.log(usAvg)
         
         stMapping = stAvg.map((a,i) => {return { avg:parseFloat(a),yr:this.years[i] }});
 
