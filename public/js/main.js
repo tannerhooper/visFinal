@@ -41,17 +41,6 @@ Promise.all(calls).then(data => {
     let yr = 2018
     let s = d3.select(`#y${yr}`);
     yearChart.selectYear(s, s.data()[0]);
-
-    // console.log(data)
-
-    // d3.csv(`data/${d.YEAR}.csv`).then(year => {
-    //   demographic.update(map, year;
-    // });
-
-
-    // demographic.addOnClick(s.data()[0])
-
-
   });
 
 });
