@@ -24,7 +24,7 @@ Promise.all(calls).then(data => {
     let years = yearlyDropouts.map(d => { return parseInt(d.YEAR) });
 
     // const usLine = new LineChart('us',null,years);
-    const lineChart = new LineChart(yearlyDropouts,allYears,years);
+    const lineChart = new LineChart(allYears,years);
     const map = new Map(lineChart);
     let demographic = new Demographic(map);
 
