@@ -121,7 +121,12 @@ class Map {
 
 
     createLegend() {
+        // Remove contents
+        d3.select('#legend').html("")
+
+
         let defs = d3.select('#legend')
+            // .remove()
             .append("svg")
             .attr('id', 'legend-svg')
             .append("defs");
@@ -162,13 +167,13 @@ class Map {
         //Set the color for the start (0%)
         linearGradient.append("stop")
             .attr("offset", "0%")
-            .attr("stop-color", "#bedaed"); //light blue
+            .attr("stop-color", "#08306b"); //light blue
 
 
         //Set the color for the end (100%)
         linearGradient.append("stop")
             .attr("offset", "100%")
-            .attr("stop-color", "#08306b"); //dark blue
+            .attr("stop-color", "#bedaed"); //dark blue
 
 
         //Draw the rectangle and fill with gradient
@@ -223,7 +228,7 @@ class Map {
                     let buttons = document.getElementsByClassName('grad_rate');
                     let dataset = 'element.';
                     for (var i = 0; i < buttons.length; i++) {
-                        if (buttons[i].checked == true && buttons[i].value == 'PELL_COMP_ORIG_YR4_RT') {
+                        if (buttons[i].checked == true && (buttons[i].value == 'PELL_COMP_ORIG_YR4_RT' || buttons[i].value == 'LOAN_COMP_ORIG_YR4_RT')) {
                             // appends column name to dataset. 
                             // console.log(buttons[i].value, typeof (buttons[i].value))
                             dataset = dataset + buttons[i].value;
@@ -236,7 +241,7 @@ class Map {
                         // console.log(eval(dataset))
 
                         // if (eval(dataset) != 'NULL' && eval(dataset) != 'PrivacySuppressed') {
-                        if (!this.isAlpha(eval(dataset)) && eval(dataset) != 'NULL') {
+                        if (!this.isAlpha(eval(dataset)) && eval(dataset) != 'NULL' && eval(dataset) != 'PrivacySuppressed') {
 
                             stateList[element.STABBR][0] += parseFloat(eval(dataset));
                             stateList[element.STABBR][1] += 1;

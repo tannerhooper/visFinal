@@ -1,13 +1,11 @@
 class LineChart {
     /**
      * Constructor for the Line Chart
-     * @param usData: data for the US average chart
      * @param allYears: optional parameter that contains the data for all the years
      * @param years: all the data from all the CSV files
      */
-    constructor(usData,allYears = null,years){
-        this.chart = d3.select(`#st-line-chart`).classed("sideBar",true);
-        this.usData = usData;
+    constructor(allYears = null,years){
+        this.chart = d3.select(`#line-chart`).classed("sideBar",true);
         this.allYears = allYears;
         this.years = years;
 
@@ -63,13 +61,11 @@ class LineChart {
         
         this.svg.selectAll("path.avgline").remove();
         let stAvg = [];
+        let usTots = [];
         let stMapping;
-        let usMapping;
-        // console.log(demoFilter)
         if (curSt !== null) this.selState = curSt;
         if (bounds !== null) this.bounds = bounds;
         if (demoFilter !== null) this.demoFilter = demoFilter;
-        // console.log(this.demoFilter)
 
         // Sets line chart title
         d3.select('#stAvg').text(`State Average: ${this.stateMapping[this.selState]}`)
@@ -85,15 +81,26 @@ class LineChart {
                         && parseFloat(d.INEXPFTE) < this.bounds[1])
                 }
             );
-            if (exp.length === 0) { stAvg.push(0) }
+            if (exp.length === 0) { stAvg.push(0); }
             else {
                 let s = d3.sum(exp.map(d => { return parseFloat(d[this.demoFilter]) }));
                 stAvg.push( ((s / exp.length)*100).toFixed(2) );
             }
+            // Separate filter for US, since it doesn't filter out states
+            let usDemo = this.allYears[t].filter(d => d[this.demoFilter] !== 'NULL');
+            let usExp = usDemo.filter(d => {
+                if (this.bounds[1] == 9990) return d.INEXPFTE !== 'NULL' && (parseFloat(d.INEXPFTE) > this.bounds[0])
+                else return d.INEXPFTE !== 'NULL' && (parseFloat(d.INEXPFTE) > this.bounds[0]
+                    && parseFloat(d.INEXPFTE) < this.bounds[1])
+            });
+            usTots.push(usExp.map(d => d[this.demoFilter]));
         }
+        let usAvg = usTots.map((d,i) => {
+            let tmp = ((d3.sum(d)/d.length)*100).toFixed(2);
+            return {avg:parseFloat(tmp),yr:this.years[i]}
+        })
         
         stMapping = stAvg.map((a,i) => {return { avg:parseFloat(a),yr:this.years[i] }});
-        usMapping = this.usData.map(a => {return { avg:parseFloat(a[this.demoFilter]),yr:a.YEAR }});
 
         // Code to determine min/max of each state, then min/max of all those together
         let minmax = {
@@ -155,7 +162,7 @@ class LineChart {
                 .y(d => y(d.avg)));
         // Add US line
         this.svg.append("path")
-            .datum(usMapping)
+            .datum(usAvg)
             .attr('class','avgline')
             .attr("fill", "none")
             .attr("stroke", "red")
