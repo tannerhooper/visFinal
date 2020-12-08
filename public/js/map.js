@@ -3,8 +3,9 @@ class Map {
        * Constructor for the Year Chart
        * @param line instance of the Line Chart
        */
-    constructor(line){
+    constructor(line, tooltip){
         this.lineChart = line;
+        this.tooltip = tooltip;
     }
 
     // var isAlpha = function (ch) {
@@ -195,6 +196,15 @@ class Map {
                 }
             })
             .on('click',d => this.lineChart.update(States[d.id],null,null))
+            .on("mouseover", d => {
+                this.tooltip.mouseover(d, States[d.id]);
+              })
+            .on("mousemove", () => {
+                this.tooltip.mousemove();
+              })
+            .on("mouseout", () => {
+                this.tooltip.mouseout();
+              })
             ;
     }
 

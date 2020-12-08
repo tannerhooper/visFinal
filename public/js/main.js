@@ -1,4 +1,5 @@
 // Create instances of all charts
+let tooltip = new Tooltip();
 let list = new List();
 let spendChart = new SpendChart();
 let allYears = {};
@@ -25,7 +26,7 @@ Promise.all(calls).then(data => {
 
     // const usLine = new LineChart('us',null,years);
     const lineChart = new LineChart(yearlyDropouts,allYears,years);
-    const map = new Map(lineChart);
+    const map = new Map(lineChart, tooltip);
     let demographic = new Demographic(map);
 
     let yearChart = new YearChart(map,lineChart,spendChart,yearlyDropouts, demographic, list);// TODO: pass chart instances 
