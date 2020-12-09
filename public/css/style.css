@@ -4,6 +4,7 @@ body {
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
+  /* transform: scale(0.1); */
 }
 
 .yeartext{

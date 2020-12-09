@@ -3,14 +3,10 @@ class Map {
        * Constructor for the Year Chart
        * @param line instance of the Line Chart
        */
-    constructor(line, tooltip){
+    constructor(line, tooltip) {
         this.lineChart = line;
         this.tooltip = tooltip;
     }
-
-    // var isAlpha = function (ch) {
-    //     return /^[A-Z]$/i.test(ch);
-    // }
 
     isAlpha(ch) {
         return /^[A-Z]$/i.test(ch);
@@ -200,16 +196,16 @@ class Map {
                     return colorScale(gradRate);
                 }
             })
-            .on('click',d => this.lineChart.update(States[d.id],null,null))
+            .on('click', d => this.lineChart.update(States[d.id], null, null))
             .on("mouseover", d => {
                 this.tooltip.mouseover(this.data, States[d.id]);
-              })
+            })
             .on("mousemove", () => {
                 this.tooltip.mousemove();
-              })
+            })
             .on("mouseout", () => {
                 this.tooltip.mouseout();
-              })
+            })
             ;
     }
 
