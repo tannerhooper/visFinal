@@ -3,7 +3,6 @@ class YearChart {
 
   /**
    * Constructor for the Year Chart
-   * TODO: add chart vars
    * @param map
    * @param line
    * @param spendChart
@@ -11,7 +10,7 @@ class YearChart {
    * @param yearlyDropouts over years
    */
   constructor(map, line, spendChart, yearlyDropouts, demographic, list) {
-    //Todo: Create YearChart instance
+    //Create Chart instances
     this.spendChart = spendChart;
     this.map = map;
     this.line = line;
@@ -39,6 +38,7 @@ class YearChart {
     this.selected = null;
   }
 
+  // Future work: add keybinding
   //   move(x) {
   //     return function(event) {
   //         event.preventDefault();
@@ -119,7 +119,7 @@ class YearChart {
       .classed('yeartext', true)
       ;
   }
-
+// updates the yearchart and subcharts with selected year
   selectYear(selected, d) {
     if (this.selected) {
       this.selected.classed('highlighted', false);
@@ -130,7 +130,7 @@ class YearChart {
     d3.csv(`data/${d.YEAR}.csv`).then(year => {
       this.spendChart.update(this.map, year, this.line);
       this.demographic.update(this.map, year, this.line, this.list)
-      this.map.update(year); //TODO send chart instances
+      this.map.update(year); // send chart instances
       this.list.update(year)
     });
   }

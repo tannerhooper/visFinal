@@ -2,14 +2,13 @@ class Tooltip {
 
   constructor() {
     //----------------------------------------
-    // tooltip
+    // Constructor for the tooltip
     //----------------------------------------
     this.tooltip = d3.select("body")
       .append("div")
       .style("position", "absolute")
       .style("z-index", "10")
       .style("visibility", "hidden")
-      // .attr("opacity", 0)
       .style("background", "#FFFFFF")
       .attr('id', 'tooltip')
       .classed('tooltipDiv', true)
@@ -26,23 +25,44 @@ class Tooltip {
       "TN": "Tennessee","TX": "Texas","UT": "Utah","VT": "Vermont","VA": "Virginia","WA": "Washington",
       "WV": "West Virginia","WI": "Wisconsin","WY": "Wyoming"
     }
+    this.cols = [ "C150_4_2MOR", "C150_4_AIAN", "C150_4_ASIAN", "C150_4_BLACK", "C150_4_HISP", "C150_4_NHPI", "C150_4_NRA", "C150_4_UNKN", "C150_4_WHITE"];
   };
-
+  
   /**
    * Gets the HTML content for a tool tip.
    */
   tooltip_html(data, d) {
+    var cols = this.cols;
+    var perct = 0;
     let text = "<h2>" + `${this.stateMapping[d]}` + "</h2>";
-    // text +=  "Total Crimes: " + d.Index;
-    // text += "<ul>"
-    // // Murder
-    // text += "<li class = murder>" + "Murder:\t\t"+d.Murder+"</li>"
-   // Auto
-    // text += "<li class = independent>" + "Auto:\t\t"+d.Auto+"</li>"
-    
-    // text += "</ul>";
+    cols.forEach(function(race) {
+      var dta = data.filter(dt => {
+        return dt.STABBR === d && dt[race] !== 'NULL'});
+        // console.log(dta.race)
+        // dta[race].reduce((a, b) => (a + b)) / dta.length;
+        perct = parseFloat(data.filter(dt => {
+          return dt.STABBR === d && dt[race] !== 'NULL'}));
+          text += `<table>  
+          <tr>
+            <td>`+`${race}`+ `</td> 
+            <td>
+            <div style=\"width:{{ 1.3*`+ `${perct}` + `}}px; 
+                  height:15px; background-color:#BFA817; color:white; 
+                  padding:4px 4px 0px 4px; vertical-align:bottom; 
+                  font-weight:bold; display:inline-block;\">
+            </div> 
+            <div style=\"width:{{ 130-(1.3*`+ `${perct}` + `) }}px;
+                  height:15px; background-color:#F2F2F2; color:#a69214; 
+                  vertical-align:bottom; padding:4px 4px 0px 4px;
+                  font-weight:bold; display:inline-block;\">{{ `+ `${perct}` + ` }}% 
+            </div>
+            </td>
+          </tr>  
+          </table>`; 
+        });
     return text;
-  }
+  };
+
 
   mouseover(data, d) {
     this.tooltip

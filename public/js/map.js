@@ -202,7 +202,7 @@ class Map {
             })
             .on('click',d => this.lineChart.update(States[d.id],null,null))
             .on("mouseover", d => {
-                this.tooltip.mouseover(d, States[d.id]);
+                this.tooltip.mouseover(this.data, States[d.id]);
               })
             .on("mousemove", () => {
                 this.tooltip.mousemove();
