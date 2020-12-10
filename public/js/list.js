@@ -77,7 +77,7 @@ class List {
         let stateList = d3.select("#state")
             .html("")
             .append("h3")
-            .text("Top 5 " + state + " Schools")
+            .text("Top 5 " + Tools.stateMapping[state] + " Schools")
 
         let topStateSchools = stateList.selectAll('#state')
             .data(topStateData)

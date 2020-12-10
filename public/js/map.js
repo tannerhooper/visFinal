@@ -118,7 +118,7 @@ class Map {
         // d3.select('#legend').html("")
 
 
-        let defs = d3.select('#legend')
+        let defs = d3.select('#map')
             // .remove()
             .append("svg")
             .attr('id', 'legend-svg')
