@@ -98,6 +98,17 @@ body {
   margin-left: 50%;
 }
 
+.curYrCircle {
+  fill: purple;
+  opacity: .5;
+  stroke: black;
+}
+
+.avgline {
+  fill: none;
+  stroke-width: 2;
+}
+
 /***************************************/
 /*            Map Styling              */
 

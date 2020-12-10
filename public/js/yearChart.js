@@ -128,8 +128,9 @@ class YearChart {
     this.selected.classed('highlighted', true);
 
     d3.csv(`data/${d.YEAR}.csv`).then(year => {
-      this.spendChart.update(this.map, year, this.line);
-      this.demographic.update(this.map, year, this.line, this.list)
+      this.line.update(null,null,null,d.YEAR)
+      this.spendChart.update(this.map,year,this.line);
+      this.demographic.update(this.map,year,this.line,this.list)
       this.map.update(year); // send chart instances
       this.list.update(year)
     });
