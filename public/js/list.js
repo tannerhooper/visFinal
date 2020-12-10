@@ -16,7 +16,8 @@ class List {
 
     }
 
-    update(data, state) {
+    update(ogData, state) {
+        let data = [];
         let ct = 0;
         let ctState = 0;
         if (state == null) { state = "UT" }
@@ -34,9 +35,22 @@ class List {
             }
         }
 
+        ogData.forEach(element => {
+            if (eval(elDataset) !== 'NULL' && eval(elDataset) !== 'PrivacySuppressed') {
+                data.push(element);
+            }
+        });
+
+        // let data = ogData.map(d => {
+        //     if (eval(dDataset) !== 'NULL' && eval(dDataset) !== 'PrivacySuppressed') {
+        //         return d;
+        //     }
+        // })
+
         var topData = data.sort(function (a, b) {
             if (eval(aDataset) != 'NULL' && eval(bDataset) != 'NULL'
                 && eval(aDataset) != 'PrivacySuppressed' && eval(bDataset) != 'PrivacySuppressed') {
+                // console.log(typeof eval(bDataset), eval(bDataset), typeof eval(aDataset), eval(aDataset))
 
                 return eval(bDataset) - eval(aDataset);
             }
@@ -66,7 +80,12 @@ class List {
             .append("p")
             .text(function (d) {
                 ct += 1
+                // console.log(typeof eval(dDataset), eval(dDataset))
                 let percentage = parseFloat(eval(dDataset)).toFixed(2);
+                if (eval(dDataset) == '1') {
+                    return ct + ".   " + d.INSTNM + "  - : 100%";
+                }
+                // console.log('')
                 percentage = percentage.substring(2);
                 return ct + ".   " + d.INSTNM + "   - " + percentage + '%';
             })
@@ -85,12 +104,15 @@ class List {
             .append("p")
             .text(function (d) {
                 ctState += 1
-                console.log(typeof eval(dDataset), eval(dDataset))
+                // console.log(typeof eval(dDataset), eval(dDataset))
                 if (eval(dDataset) == '1') {
                     return ctState + ".   " + d.INSTNM + "  - : 100%";
                 }
                 else {
                     let percentage = parseFloat(eval(dDataset)).toFixed(2);
+                    if (percentage == '1.00') {
+                        return ctState + ".   " + d.INSTNM + "   -  100%";
+                    }
                     percentage = percentage.substring(2);
                     return ctState + ".   " + d.INSTNM + "   -  " + percentage + '%';
                 }

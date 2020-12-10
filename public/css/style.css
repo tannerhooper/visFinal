@@ -64,7 +64,7 @@ body {
     stroke-dasharray: 2,2;
 }
 .highlighted{
-    stroke: #404040;;
+    stroke: orange;
     stroke-width:4;
     resize: 4
 }
