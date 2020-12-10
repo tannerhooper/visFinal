@@ -1,16 +1,13 @@
 class Demographic {
-
     constructor(map) {
         this.map = map;
     }
 
     update(map, data, line, list) {
-
         let button_data = [['Overall', 'C150_4'], ['Pell Grant', 'PELL_COMP_ORIG_YR4_RT'], ['Federal Loan', 'LOAN_COMP_ORIG_YR4_RT']]
 
         // Create the shape selectors
         var form = d3.select("#buttons");
-
         let labels = form.selectAll("#button")
             .data(button_data)
             .enter()
@@ -35,9 +32,6 @@ class Demographic {
 
     addOnClick(data) {
         d3.selectAll('#demo_buttons')
-
-
-
         // .attr('onclick', this.map.update(data))
     }
 }

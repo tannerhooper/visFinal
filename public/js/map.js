@@ -16,9 +16,7 @@ class Map {
         // d3.selectAll('path').remove();
         this.data = data;
 
-        if (data.length <= 1) {
-            return;
-        }
+        if (data.length <= 1) { return; }
 
         let States = {
             "02": "AK",
@@ -105,9 +103,7 @@ class Map {
             // .range(range)
 
             this.createMap(svg, us, States, path, colorScale, stateList);
-
             this.createLegend();
-
 
             svg.append("path")
                 .attr("class", "state-borders")
@@ -119,14 +115,11 @@ class Map {
     createLegend() {
         // Remove contents
         d3.select('#legend').html("")
-
-
         let defs = d3.select('#legend')
             // .remove()
             .append("svg")
             .attr('id', 'legend-svg')
             .append("defs");
-
 
         //Append a linearGradient element to the defs and give it a unique id
         var linearGradient = defs.append("linearGradient")
@@ -165,12 +158,10 @@ class Map {
             .attr("offset", "0%")
             .attr("stop-color", "#08306b"); //light blue
 
-
         //Set the color for the end (100%)
         linearGradient.append("stop")
             .attr("offset", "100%")
             .attr("stop-color", "#bedaed"); //dark blue
-
 
         //Draw the rectangle and fill with gradient
         d3.selectAll('#legend-svg').append("rect")
@@ -220,7 +211,6 @@ class Map {
                 }
                 else {
                     // add eval statement based on selected radio parameter.
-
                     let buttons = document.getElementsByClassName('grad_rate');
                     let dataset = 'element.';
                     for (var i = 0; i < buttons.length; i++) {
@@ -250,14 +240,10 @@ class Map {
                             stateList[element.STABBR][1] += 1;
                         }
                     }
-
                 }
             }
-
             );
-
         }
-
 
         for (const [key, value] of Object.entries(stateList)) {
             value[2] = value[0] / value[1];
@@ -265,7 +251,6 @@ class Map {
                 value[2] = 0;
             }
         }
-        // console.log(stateList['UT'][2]);
         return stateList;
     }
 }
