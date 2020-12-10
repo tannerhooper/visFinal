@@ -119,7 +119,7 @@ class YearChart {
       .classed('yeartext', true)
       ;
   }
-// updates the yearchart and subcharts with selected year
+  // updates the yearchart and subcharts with selected year
   selectYear(selected, d) {
     if (this.selected) {
       this.selected.classed('highlighted', false);

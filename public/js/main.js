@@ -3,7 +3,7 @@ let tooltip = new Tooltip();
 let list = new List();
 let spendChart = new SpendChart();
 let allYears = {};
-calls = [];
+let calls = [];
 for (let i = 1997; i < 2019; i++) {
   calls.push(d3.csv(`data/${i}.csv`));
 }
@@ -25,11 +25,11 @@ Promise.all(calls).then(data => {
     let years = yearlyDropouts.map(d => { return parseInt(d.YEAR) });
 
     // const usLine = new LineChart('us',null,years);
-    const lineChart = new LineChart(allYears,years);
-    const map = new Map(lineChart, tooltip);
+    const lineChart = new LineChart(allYears, years);
+    const map = new Map(lineChart, tooltip, list);
     let demographic = new Demographic(map);
 
-    let yearChart = new YearChart(map,lineChart,spendChart,yearlyDropouts, demographic, list);// TODO: pass chart instances 
+    let yearChart = new YearChart(map, lineChart, spendChart, yearlyDropouts, demographic, list);// TODO: pass chart instances 
     yearChart.update();
 
     // usLine.update(data,true);

@@ -3,9 +3,10 @@ class Map {
        * Constructor for the Year Chart
        * @param line instance of the Line Chart
        */
-    constructor(line, tooltip) {
+    constructor(line, tooltip, list) {
         this.lineChart = line;
         this.tooltip = tooltip;
+        this.list = list
     }
 
     isAlpha(ch) {
@@ -177,6 +178,21 @@ class Map {
             .attr("width", 300)
             .attr("height", 20)
             .style("fill", "url(#linear-gradient)");
+
+        // Create scale
+        let legendScale = d3.scaleLinear()
+            .domain([d3.min(0), d3.max(1)])
+            .range([0, 400]);
+
+        // Add scales to axis
+        let x_axis = d3.axisBottom()
+            .scale(legendScale);
+
+        //Append group and insert axis
+        d3.select('#scale')
+            .append("svg")
+            .append("g")
+            .call(x_axis);
     }
 
     createMap(svg, us, States, path, colorScale, stateList) {
@@ -196,16 +212,19 @@ class Map {
                     return colorScale(gradRate);
                 }
             })
-            .on('click', d => this.lineChart.update(States[d.id], null, null))
-            .on("mouseover", d => {
-                this.tooltip.mouseover(this.data, States[d.id]);
+            .on('click', d => {
+                this.lineChart.update(States[d.id], null, null);
+                this.list.update(this.data, States[d.id])
             })
-            .on("mousemove", () => {
-                this.tooltip.mousemove();
-            })
-            .on("mouseout", () => {
-                this.tooltip.mouseout();
-            })
+            // .on("mouseover", d => {
+            //     this.tooltip.mouseover(this.data, States[d.id]);
+            // })
+            // .on("mousemove", () => {
+            //     this.tooltip.mousemove();
+            // })
+            // .on("mouseout", () => {
+            //     this.tooltip.mouseout();
+            // })
             ;
     }
 
