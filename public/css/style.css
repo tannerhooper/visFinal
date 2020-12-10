@@ -7,6 +7,14 @@ body {
   /* transform: scale(0.1); */
 }
 
+#names {
+  display: flex;
+}
+
+#names p{
+  padding-right: 10%;
+}
+
 .yeartext{
     text-anchor:middle;
     font-size: 28 px;
@@ -17,18 +25,20 @@ body {
     stroke: #FFF;
 }
 
+
+
 #year-chart{
   background-color: white;
   border-radius: 0.5%;
   border: solid black 4px;
-  margin-bottom: 1%;
+  margin-bottom: 0.5%;
 }
 
 #averages{
   background-color: white;
   border-radius: 0.5%;
   border: solid black 4px;
-  margin-bottom: 1%;
+  margin-bottom: 0.5%;
   padding: 0.7%;
 }
 
@@ -42,7 +52,7 @@ body {
 }
 
 #spend-chart{
-  margin-bottom: 1%;
+  margin-bottom: 0.5%;
   padding-left: 1%;
   background-color: white;
   border-radius: 0.5%;
@@ -111,12 +121,29 @@ body {
 #map {
   border: solid lightgray;
   margin-top: 0.5%;
-  margin-left: 0.5%;
+  margin-left: 9.5%;
+  transform: scaleX(1.2);
+}
+
+#map svg g g line {
+  -webkit-transform: translate(0px, -5px);
+
 }
 
 #legend {
   margin-top: 1%;
   margin-left: 50%;
+}
+
+.curYrCircle {
+  fill: purple;
+  opacity: .5;
+  stroke: black;
+}
+
+.avgline {
+  fill: none;
+  stroke-width: 2;
 }
 
 /***************************************/
