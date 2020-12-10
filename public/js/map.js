@@ -3,14 +3,11 @@ class Map {
        * Constructor for the Year Chart
        * @param line instance of the Line Chart
        */
-    constructor(line, tooltip){
+    constructor(line, tooltip, list) {
         this.lineChart = line;
         this.tooltip = tooltip;
+        this.list = list
     }
-
-    // var isAlpha = function (ch) {
-    //     return /^[A-Z]$/i.test(ch);
-    // }
 
     isAlpha(ch) {
         return /^[A-Z]$/i.test(ch);
@@ -20,9 +17,7 @@ class Map {
         // d3.selectAll('path').remove();
         this.data = data;
 
-        if (data.length <= 1) {
-            return;
-        }
+        if (data.length <= 1) { return; }
 
         let States = {
             "02": "AK",
@@ -109,9 +104,7 @@ class Map {
             // .range(range)
 
             this.createMap(svg, us, States, path, colorScale, stateList);
-
             this.createLegend();
-
 
             svg.append("path")
                 .attr("class", "state-borders")
@@ -122,19 +115,23 @@ class Map {
 
     createLegend() {
         // Remove contents
-        d3.select('#legend').html("")
+        // d3.select('#legend').html("")
 
 
-        let defs = d3.select('#legend')
+        let defs = d3.select('#map')
             // .remove()
             .append("svg")
             .attr('id', 'legend-svg')
             .append("defs");
 
-
         //Append a linearGradient element to the defs and give it a unique id
         var linearGradient = defs.append("linearGradient")
             .attr("id", "linear-gradient");
+
+        // var linearGradient = d3.select('#map')
+        //     .append("linearGradient")
+        // .attr("x", "100")
+        // .attr("y", "100")
 
         //Horizontal gradient
         linearGradient
@@ -169,18 +166,41 @@ class Map {
             .attr("offset", "0%")
             .attr("stop-color", "#08306b"); //light blue
 
-
         //Set the color for the end (100%)
         linearGradient.append("stop")
             .attr("offset", "100%")
             .attr("stop-color", "#bedaed"); //dark blue
 
-
         //Draw the rectangle and fill with gradient
-        d3.selectAll('#legend-svg').append("rect")
-            .attr("width", 300)
+        d3.selectAll('#map').append("rect")
+            .attr("width", 202)
             .attr("height", 20)
+            .attr('transform', 'rotate(-90) translate(-590, 930)')
             .style("fill", "url(#linear-gradient)");
+
+        // Create scale
+        let legendScale = d3.scaleLinear()
+            .domain([0, 100])
+            .range([0, 200]);
+
+        // Add scales to axis
+        let x_axis = d3.axisBottom()
+            .scale(legendScale);
+
+        //Append group and insert axis
+        d3.select('#map')
+            .append("svg")
+            .append("g")
+            .attr('transform', 'rotate(-90) translate(-590, 925)')
+            .call(x_axis)
+            // .selectAll('g')
+            .selectAll('text')
+            .attr('transform', 'rotate(90) translate(-18, -12)')
+            .exit()
+            .selectAll('line')
+            .attr('transform', 'translate(0, -5)')
+
+        // transform="rotate(-90) translate(-12,-10)"
     }
 
     createMap(svg, us, States, path, colorScale, stateList) {
@@ -200,16 +220,19 @@ class Map {
                     return colorScale(gradRate);
                 }
             })
-            .on('click',d => this.lineChart.update(States[d.id],null,null))
+            .on('click', d => {
+                this.lineChart.update(States[d.id], null, null);
+                this.list.update(this.data, States[d.id])
+            })
             .on("mouseover", d => {
                 this.tooltip.mouseover(this.data, States[d.id]);
-              })
+            })
             .on("mousemove", () => {
                 this.tooltip.mousemove();
-              })
+            })
             .on("mouseout", () => {
                 this.tooltip.mouseout();
-              })
+            })
             ;
     }
 
@@ -224,23 +247,18 @@ class Map {
                 }
                 else {
                     // add eval statement based on selected radio parameter.
-
                     let buttons = document.getElementsByClassName('grad_rate');
                     let dataset = 'element.';
                     for (var i = 0; i < buttons.length; i++) {
                         if (buttons[i].checked == true && (buttons[i].value == 'PELL_COMP_ORIG_YR4_RT' || buttons[i].value == 'LOAN_COMP_ORIG_YR4_RT')) {
                             // appends column name to dataset. 
-                            // console.log(buttons[i].value, typeof (buttons[i].value))
                             dataset = dataset + buttons[i].value;
                             isRadioButton = true
                         }
                     }
                     if (!isRadioButton) { dataset = 'element.C150_4' }
-                    // console.log(eval(dataset))
                     if (isRadioButton) {
-                        // console.log(eval(dataset))
 
-                        // if (eval(dataset) != 'NULL' && eval(dataset) != 'PrivacySuppressed') {
                         if (!this.isAlpha(eval(dataset)) && eval(dataset) != 'NULL' && eval(dataset) != 'PrivacySuppressed') {
 
                             stateList[element.STABBR][0] += parseFloat(eval(dataset));
@@ -254,14 +272,10 @@ class Map {
                             stateList[element.STABBR][1] += 1;
                         }
                     }
-
                 }
             }
-
             );
-
         }
-
 
         for (const [key, value] of Object.entries(stateList)) {
             value[2] = value[0] / value[1];
@@ -269,7 +283,6 @@ class Map {
                 value[2] = 0;
             }
         }
-        // console.log(stateList['UT'][2]);
         return stateList;
     }
 }

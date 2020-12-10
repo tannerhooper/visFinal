@@ -38,7 +38,7 @@ class Tooltip {
       "C150_4_NRA": "Nonresident Alien", "C150_4_UNKN": "Unknown", "C150_4_WHITE": "White"
     };
     var perct = 0;
-    let text = "<h2>" + `${this.stateMapping[d]}` + "</h2>";
+    let text = "<h2>" + `${Tools.stateMapping[d]}` + "</h2>";
     cols.forEach(function(race) {
       var dta = data.filter(dt => {
         return dt.STABBR === d && dt[race] !== 'NULL'});
