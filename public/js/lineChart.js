@@ -8,7 +8,7 @@ class LineChart {
         this.chart = d3.select(`#line-chart`).classed("sideBar",true);
         this.allYears = allYears;
         this.years = years;
-        
+
         // variables for filters
         this.selState = '';
         this.bounds = [];
@@ -47,11 +47,11 @@ class LineChart {
      * @param {lower and upper bounds selected from spend chart} bounds 
      */
     update(curSt='UT',demoFilter='C150_4',bounds=[0,9990],curYr='2018'){
-        this.svg.selectAll("path.avgline").remove();
-        this.svg.selectAll("circle").remove();
+        this.svg.selectAll("*").remove();
         let stAvg = [];
         let usTots = [];
         let stMapping;
+
         if (curSt !== null) this.selState = curSt;
         if (demoFilter !== null) this.demoFilter = demoFilter;
         if (bounds !== null) this.bounds = bounds;
@@ -94,11 +94,12 @@ class LineChart {
         
         // Add X axis --> it is a date format
         var x = d3.scaleTime()
-            .domain(d3.extent(this.years, d => d))
-            .range([ 0, this.svgWidth- this.margin.left - this.margin.right ]);
+            .domain([1997,2018])
+            .range([0, this.svgWidth - this.margin.left - this.margin.right]);
         this.svg.append("g")
             .attr("transform",`translate(${this.margin.left},${this.svgHeight-this.margin.bottom})`)
             .call(d3.axisBottom(x).tickFormat(d3.format('d')));
+
         // Add Y axis
         var y = d3.scaleLinear()
             .domain([0,75])
@@ -106,6 +107,7 @@ class LineChart {
         this.svg.append("g")
             .attr("transform",`translate(${this.margin.left},0)`)
             .call(d3.axisLeft(y));
+
         // Add ST line
         this.svg.append("path").datum(stMapping)
             .attr('class','avgline')
@@ -113,6 +115,7 @@ class LineChart {
             .attr("d", d3.line()
                 .x(d => x(d.yr)+this.margin.left)
                 .y(d => y(d.avg)));
+                
         // Add US line
         this.svg.append("path").datum(usAvg)
             .attr('class','avgline')
