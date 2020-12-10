@@ -33,9 +33,15 @@ class Tooltip {
   tooltip_html(data, d) {
     var cols = [ "C150_4_AIAN", "C150_4_ASIAN", "C150_4_BLACK", "C150_4_HISP", "C150_4_NHPI", "C150_4_NRA", "C150_4_WHITE", "C150_4_2MOR", "C150_4_UNKN"];
     var colMapping = {
-      "C150_4_2MOR": "2 or More", "C150_4_AIAN": "Native American", "C150_4_ASIAN": "Asian",
-      "C150_4_BLACK": "Black", "C150_4_HISP": "Hispanic", "C150_4_NHPI": "Pacific Islander",
-      "C150_4_NRA": "Nonresident Alien", "C150_4_UNKN": "Unknown", "C150_4_WHITE": "White"
+      "C150_4_2MOR": "2 or More \xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0", 
+      "C150_4_AIAN": "Native American \xa0",
+      "C150_4_ASIAN": "Asian \xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0",
+      "C150_4_BLACK": "Black \xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0", 
+      "C150_4_HISP": "Hispanic \xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0",
+      "C150_4_NHPI": "Pacific Islander \xa0\xa0\xa0",
+      "C150_4_NRA": "Nonresident Alien", 
+      "C150_4_UNKN": "Unknown \xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0", 
+      "C150_4_WHITE": "White \xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0"
     };
     var perct = 0;
     let text = "<h2>" + `${Tools.stateMapping[d]}` + "</h2>";
@@ -54,16 +60,16 @@ class Tooltip {
           <tr>
             <td>`+`${colMapping[race]}`+ `</td> 
             <td>
-            <div style=\"width: 1.3*`+ `${perct/100}` + `px; 
+              <div style="width:` + `${1.3*perct}` + `px; 
                   height:15px; background-color:#BFA817; color:white; 
                   padding:4px 4px 0px 4px; vertical-align:bottom;
-                  font-weight:bold; display:inline-block;\">
-            </div> 
-            <div style=\"width: 130-(1.3*`+ `${perct/100}` + `) px;
-                  height:15px; background-color:#F2F2F2; color:#a69214; 
-                  vertical-align:bottom; padding:4px 4px 0px 4px;
-                  font-weight:bold; display:inline-block;\"> `+ `${perct}` + `% 
-            </div>
+                  display:inline-block;">
+              </div> 
+              <div style="width: `+ `${130-(1.3*perct)}` + ` px;
+                    height:15px; background-color:#F2F2F2; color:#a69214; 
+                    vertical-align:bottom; padding:4px 4px 0px 4px;
+                    font-weight:bold; display:inline-block;"> `+ `${perct}` + `% 
+              </div>
             </td>
           </tr>  
           </table>`; 
