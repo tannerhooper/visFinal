@@ -41,20 +41,14 @@ class List {
             }
         });
 
-        // let data = ogData.map(d => {
-        //     if (eval(dDataset) !== 'NULL' && eval(dDataset) !== 'PrivacySuppressed') {
-        //         return d;
-        //     }
-        // })
 
         var topData = data.sort(function (a, b) {
             if (eval(aDataset) != 'NULL' && eval(bDataset) != 'NULL'
                 && eval(aDataset) != 'PrivacySuppressed' && eval(bDataset) != 'PrivacySuppressed') {
-                // console.log(typeof eval(bDataset), eval(bDataset), typeof eval(aDataset), eval(aDataset))
 
                 return eval(bDataset) - eval(aDataset);
             }
-        }).slice(0, 5);//top 10 here
+        }).slice(0, 5);//top 5 here
 
         let stateData = this.extractStateData(data, state, elDataset);
 
@@ -80,12 +74,10 @@ class List {
             .append("p")
             .text(function (d) {
                 ct += 1
-                // console.log(typeof eval(dDataset), eval(dDataset))
                 let percentage = parseFloat(eval(dDataset)).toFixed(2);
                 if (eval(dDataset) == '1') {
                     return ct + ".   " + d.INSTNM + "  - : 100%";
                 }
-                // console.log('')
                 percentage = percentage.substring(2);
                 return ct + ".   " + d.INSTNM + "   - " + percentage + '%';
             })
@@ -104,7 +96,6 @@ class List {
             .append("p")
             .text(function (d) {
                 ctState += 1
-                // console.log(typeof eval(dDataset), eval(dDataset))
                 if (eval(dDataset) == '1') {
                     return ctState + ".   " + d.INSTNM + "  - : 100%";
                 }
@@ -117,12 +108,5 @@ class List {
                     return ctState + ".   " + d.INSTNM + "   -  " + percentage + '%';
                 }
             })
-
-
-
-
     }
-
-
-
 }

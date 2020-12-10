@@ -14,7 +14,6 @@ class Map {
     }
 
     update(data) {
-        // d3.selectAll('path').remove();
         this.data = data;
 
         if (data.length <= 1) { return; }
@@ -72,19 +71,11 @@ class Map {
             "56": 'WY'
         }
 
-        data.forEach(element => {
-            // console.log('h')
-            // if (element.LOAN_COMP_ORIG_YR4_RT != 'NULL' && element.LOAN_COMP_ORIG_YR4_RT != 'PrivacySuppressed') {
-            //     console.log(element.INSTNM, element.LOAN_COMP_ORIG_YR4_RT)
-            // }
-        });
-
         var svg = d3.select("#map");
 
         var path = d3.geoPath();
 
         d3.json("https://d3js.org/us-10m.v1.json").then(us => {
-            // console.log(topojson.feature(us, us.objects.states).features)
 
             const legend_width = 300;
             const legend_height = 50;
@@ -97,11 +88,9 @@ class Map {
             let stateList = this.createStateList(data);
 
             //ColorScale be used consistently by all the charts
-            // let colorScale = d3.scaleLinear()
             let colorScale = d3.scaleSequential()
                 .domain([0.8, 0])
                 .interpolator(range);
-            // .range(range)
 
             this.createMap(svg, us, States, path, colorScale, stateList);
             this.createLegend();
@@ -128,38 +117,21 @@ class Map {
         var linearGradient = defs.append("linearGradient")
             .attr("id", "linear-gradient");
 
-        // var linearGradient = d3.select('#map')
-        //     .append("linearGradient")
-        // .attr("x", "100")
-        // .attr("y", "100")
-
         //Horizontal gradient
-        linearGradient
-            .attr("x1", "0%")
-            .attr("y1", "0%")
-            .attr("x2", "100%")
-            .attr("y2", "0%");
-
-        //Vertical gradient
         linearGradient
             .attr("x1", "0%")
             .attr("y1", "0%")
             .attr("x2", "0%")
             .attr("y2", "100%");
 
-        //Diagonal gradient
+        //Vertical gradient
         linearGradient
             .attr("x1", "0%")
             .attr("y1", "0%")
             .attr("x2", "100%")
-            .attr("y2", "100%");
+            .attr("y2", "0%");
 
-        //Diagonal gradient where the start and end point have been pulled in
-        linearGradient
-            .attr("x1", "30%")
-            .attr("y1", "30%")
-            .attr("x2", "70%")
-            .attr("y2", "70%");
+
 
         //Set the color for the start (0%)
         linearGradient.append("stop")
