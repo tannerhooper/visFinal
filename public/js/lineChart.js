@@ -8,20 +8,8 @@ class LineChart {
         this.chart = d3.select(`#line-chart`).classed("sideBar",true);
         this.allYears = allYears;
         this.years = years;
-
-        this.stateMapping = {
-            "AL": "Alabama","AK": "Alaska","AZ": "Arizona","AR": "Arkansas","CA": "California",
-            "CO": "Colorado","CT": "Connecticut","DE": "Delaware","FL": "Florida","GA": "Georgia",
-            "HI": "Hawaii","ID": "Idaho","IL": "Illinois","IN": "Indiana","IA": "Iowa","KS": "Kansas",
-            "KY": "Kentucky","LA": "Louisiana","ME": "Maine","MD": "Maryland","MA": "Massachusetts",
-            "MI": "Michigan","MN": "Minnesota","MS": "Mississippi","MO": "Missouri","MT": "Montana",
-            "NE": "Nebraska","NV": "Nevada","NH": "New Hampshire","NJ": "New Jersey","NM": "New Mexico",
-            "NY": "New York","NC": "North Carolina","ND": "North Dakota","OH": "Ohio","OK": "Oklahoma",
-            "OR": "Oregon","PA": "Pennsylvania","RI": "Rhode Island","SC": "South Carolina","SD": "South Dakota",
-            "TN": "Tennessee","TX": "Texas","UT": "Utah","VT": "Vermont","VA": "Virginia","WA": "Washington",
-            "WV": "West Virginia","WI": "Wisconsin","WY": "Wyoming"
-          }
-
+        
+        // variables for filters
         this.selState = '';
         this.bounds = [];
         this.demoFilter = '';
@@ -70,7 +58,7 @@ class LineChart {
         if (curYr !== null) this.curYr = curYr;
 
         // Sets line chart title
-        d3.select('#stAvg').text(`State Average: ${this.stateMapping[this.selState]}`)
+        d3.select('#stAvg').text(`State Average: ${Tools.stateMapping[this.selState]}`)
         
         // Computes avg per state
         for (let t in this.allYears){
