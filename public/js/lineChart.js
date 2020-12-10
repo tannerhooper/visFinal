@@ -24,17 +24,16 @@ class LineChart {
 
         this.svg = this.chart.append('svg')
             .attr('width',this.svgWidth).attr('height',this.svgHeight);
-        this.legend();
     }
 
     legend(){
         let legs = [{y:0,fill:'red',text:'US'},{y:20,fill:'steelblue',text:'State'}]
-        this.svg.selectAll('rect').data(legs).enter().append('rect')
+        this.svg.selectAll('rect.leg').data(legs).enter().append('rect')
             .attr('x',this.svgWidth-this.margin.right-40)
             .attr('y',d => this.margin.top+d.y)
             .attr('width',10).attr('height',10)
             .attr('fill',d => d.fill);
-        this.svg.selectAll('text')
+        this.svg.selectAll('text.leg')
             .data(legs).enter().append('text')
             .attr('x',this.svgWidth-this.margin.right-25)
             .attr('y',d => this.margin.top+d.y+9)
@@ -115,7 +114,7 @@ class LineChart {
             .attr("d", d3.line()
                 .x(d => x(d.yr)+this.margin.left)
                 .y(d => y(d.avg)));
-                
+
         // Add US line
         this.svg.append("path").datum(usAvg)
             .attr('class','avgline')
@@ -131,5 +130,6 @@ class LineChart {
             .attr("transform",`translate(${this.margin.left},0)`)
             .attr('cx',x(this.curYr)).attr('cy',d => y(d.y))
             .attr('r',5).attr('class','curYrCircle')
+        this.legend();
     }
 }
