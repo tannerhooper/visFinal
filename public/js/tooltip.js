@@ -31,7 +31,7 @@ class Tooltip {
    * Gets the HTML content for a tool tip.
    */
   tooltip_html(data, d) {
-    var cols = [ "C150_4_2MOR", "C150_4_AIAN", "C150_4_ASIAN", "C150_4_BLACK", "C150_4_HISP", "C150_4_NHPI", "C150_4_NRA", "C150_4_UNKN", "C150_4_WHITE"];
+    var cols = [ "C150_4_AIAN", "C150_4_ASIAN", "C150_4_BLACK", "C150_4_HISP", "C150_4_NHPI", "C150_4_NRA", "C150_4_WHITE", "C150_4_2MOR", "C150_4_UNKN"];
     var colMapping = {
       "C150_4_2MOR": "2 or More", "C150_4_AIAN": "Native American", "C150_4_ASIAN": "Asian",
       "C150_4_BLACK": "Black", "C150_4_HISP": "Hispanic", "C150_4_NHPI": "Pacific Islander",
@@ -45,6 +45,9 @@ class Tooltip {
         perct = dta.map(dt => {
             return dt[race];
           }).reduce((p, c) => +p + +c, 0) / dta.length;
+          if(Number.isNaN(perct)){
+            return ;
+          }
           perct *= 100;
           perct = perct.toFixed(0);
           text += `<table>  
@@ -53,7 +56,7 @@ class Tooltip {
             <td>
             <div style=\"width: 1.3*`+ `${perct/100}` + `px; 
                   height:15px; background-color:#BFA817; color:white; 
-                  padding:4px 4px 0px 4px; vertical-align:bottom; 
+                  padding:4px 4px 0px 4px; vertical-align:bottom;
                   font-weight:bold; display:inline-block;\">
             </div> 
             <div style=\"width: 130-(1.3*`+ `${perct/100}` + `) px;
