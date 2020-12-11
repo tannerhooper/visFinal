@@ -6,6 +6,13 @@ body {
   background-size: cover;
 }
 
+#title {
+  display: flex;
+}
+
+#link {
+margin-left: 66%;
+}
 #names {
   display: flex;
 }
