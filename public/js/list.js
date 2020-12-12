@@ -3,11 +3,15 @@ class List {
     *@param list 
     */
 
-    extractStateData(data, state, el) {
+    constructor() {
+        this.state = 'UT';
+    }
+
+    extractStateData(data, el) {
         let stateList = []
 
         data.forEach(element => {
-            if (element.STABBR == state) {
+            if (element.STABBR == this.state) {
                 if (eval(el) != "NULL" && eval(el) != 'PrivacySuppressed')
                     stateList.push(element)
             }
@@ -20,7 +24,8 @@ class List {
         let data = [];
         let ct = 0;
         let ctState = 0;
-        if (state == null) { state = "UT" }
+        if (state !== null) { this.state = state }
+        let currState = this.state;
         let buttons = document.getElementsByClassName('grad_rate');
         let aDataset = 'a.';
         let bDataset = 'b.';
@@ -50,12 +55,12 @@ class List {
             }
         }).slice(0, 5);//top 5 here
 
-        let stateData = this.extractStateData(data, state, elDataset);
+        let stateData = this.extractStateData(data, elDataset);
 
         var topStateData = stateData.sort(function (a, b) {
             if (eval(aDataset) != 'NULL' && eval(bDataset) != 'NULL'
                 && eval(aDataset) != 'PrivacySuppressed' && eval(bDataset) != 'PrivacySuppressed') {
-                if (a.STABBR == state && b.STABBR == state) {
+                if (a.STABBR == currState && b.STABBR == currState) {
                     return eval(bDataset) - eval(aDataset);
                 }
             }
@@ -88,7 +93,7 @@ class List {
         let stateList = d3.select("#state")
             .html("")
             .append("h3")
-            .text("Top 5 " + Tools.stateMapping[state] + " Schools")
+            .text("Top 5 " + Tools.stateMapping[currState] + " Schools")
 
         let topStateSchools = stateList.selectAll('#state')
             .data(topStateData)
