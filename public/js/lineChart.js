@@ -10,10 +10,10 @@ class LineChart {
         this.years = years;
 
         // variables for filters
-        this.selState = '';
-        this.bounds = [];
-        this.demoFilter = '';
-        this.curYr = '';
+        this.selState = 'UT';
+        this.bounds = [0,9990];
+        this.demoFilter = 'C150_4';
+        this.curYr = '2018';
 
         // set the dimensions and margins of the graph
         this.margin = {top: 10, right: 30, bottom: 20, left: 40};
@@ -45,7 +45,7 @@ class LineChart {
      * @param {filter selected from demographic filter} demoFilter 
      * @param {lower and upper bounds selected from spend chart} bounds 
      */
-    update(curSt='UT',demoFilter='C150_4',bounds=[0,9990],curYr='2018'){
+    update(curSt,demoFilter,bounds,curYr){
         this.svg.selectAll("*").remove();
         let stAvg = [];
         let usTots = [];

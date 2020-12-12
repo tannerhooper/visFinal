@@ -115,7 +115,7 @@ class SpendChart {
             var data = dropouts.filter(function (k) { return !isNaN(+k.INEXPFTE); })
                 .filter(function (k) { return (+k.INEXPFTE > lower && +k.INEXPFTE < upper); });
             map.update(data);
-            lineChart.update(null, null, [lower, upper])
+            lineChart.update(null,null,[lower, upper],null)
         }
     }
 }

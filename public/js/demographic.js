@@ -22,7 +22,7 @@ class Demographic {
             .attr('id', 'demo_buttons')
             .on('click', d => {
                 let fil = [...document.getElementsByClassName('grad_rate')].filter(x => x.checked == true)[0].value
-                line.update(null,fil)
+                line.update(null,fil,null,null)
                 map.update(data)
                 list.update(data)
             })

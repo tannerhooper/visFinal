@@ -30,7 +30,7 @@ Promise.all(calls).then(data => {
     let demographic = new Demographic(map);
 
     let yearChart = new YearChart(map, lineChart, spendChart, yearlyDropouts, demographic, list);// TODO: pass chart instances 
-    lineChart.update();
+    lineChart.update(null,null,null,null);
     yearChart.update();
 
     let yr = 2018;

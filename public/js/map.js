@@ -193,7 +193,7 @@ class Map {
                 }
             })
             .on('click', d => {
-                this.lineChart.update(States[d.id], null, null);
+                this.lineChart.update(States[d.id],null,null,null);
                 this.list.update(this.data, States[d.id])
             })
             .on("mouseover", d => {
